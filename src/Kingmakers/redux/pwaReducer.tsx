@@ -17,8 +17,8 @@ const initialState: PwaReduxShape = {
   fromTime: null,
   toTime: null,
   notifyer: {
-    severity: "info",
-    message: "Hullo",
+    severity: "success",
+    message: "Hello. Please QA this app",
   },
 }
 
