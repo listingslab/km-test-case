@@ -98,7 +98,21 @@ export default function Campaigns() {
                             PWA that displays a filterable list of Campaigns
                           </Font>}
                 avatar={<Avatar src="/png/logo192.png" alt={"KM Test Case"}/>}
-                action={<IconButton
+                action={<>
+
+                <IconButton
+                  size="small"
+                  color="primary"
+                  onClick={(e: React.MouseEvent) => {
+                    e.preventDefault()
+                    window.open("https://raw.githubusercontent.com/listingslab/km-test-case/master/test.json", "_blank")
+                  }}
+                >
+                  <Icon icon="code" />
+                </IconButton>
+
+
+                <IconButton
                   size="small"
                   color="primary"
                   onClick={(e: React.MouseEvent) => {
@@ -107,7 +121,8 @@ export default function Campaigns() {
                   }}
                 >
                   <Icon icon="github" />
-                </IconButton>}
+                </IconButton>
+              </>}
               />
 
 
