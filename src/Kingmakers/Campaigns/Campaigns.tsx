@@ -1,12 +1,12 @@
 import React from "react"
 import moment from "moment"
 import {
-  // CampaignShape, 
   CampaignsShape,
 } from "../types"
+// import dayjs, { Dayjs } from 'dayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import {
   styled,
   Alert,
@@ -34,6 +34,9 @@ import {
   selectPWA,
   Font,
   Icon,
+  // updateFromTime,
+  // updateToTime,
+  // setPwaKey,
 } from ".."
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -71,16 +74,17 @@ export default function Campaigns() {
   const rows: CampaignsShape = []
   const filteredCampaigns: CampaignsShape  = []
   for (let i=0; i<campaigns.length; i++){
-      let shouldInclude = true
+      let inc = true
       if (searchStr && searchStr !== "") {
-        shouldInclude = false
+        inc = false
         if (campaigns[i].name?.toLocaleLowerCase().includes(searchStr.toLocaleLowerCase())){
           filteredCampaigns.push(campaigns[i])
         }
       }
-      if (shouldInclude) filteredCampaigns.push(campaigns[i])
+      if (inc) filteredCampaigns.push(campaigns[i])
   }
   for (let j=0; j<filteredCampaigns.length; j++){
+    let visible = true
     const {
       id,
       name,
@@ -88,13 +92,21 @@ export default function Campaigns() {
       endDate,
       budget,
     } = filteredCampaigns[j]
-    rows.push(createData(
-      id,
-      name, 
-      startDate,
-      endDate,
-      budget,
-    ))
+    if (toTime){
+      if (moment(endDate).valueOf() < toTime ) visible = false
+    }
+    if (fromTime){
+      if (moment(startDate).valueOf() < fromTime ) visible = false
+    }
+    if (visible){
+      rows.push(createData(
+        id,
+        name, 
+        startDate,
+        endDate,
+        budget,
+      ))
+    }
   }
 
   return (<>
@@ -147,19 +159,26 @@ export default function Campaigns() {
                       </FormControl>
                     </Box>
                     <Box sx={{flexGrow:1}}/>
-                    <Box>
+                    {/* <Box>
                       <DatePicker 
                         label="From"
-                        value={fromTime}
+                        format="DD/MM/YYYY"
+                        value={fromTime ? dayjs(fromTime) : null}
+                        onChange={(v:any) => {
+                          dispatch(updateFromTime(moment(v).valueOf()))
+                        }}
                       />
                     </Box>
                     <Box sx={{ml:1}}>
                         <DatePicker
                           label="To"
-                          value={toTime}
-                          onChange={(newValue) => console.log(newValue)}
+                          format="DD/MM/YYYY"
+                          value={toTime ? dayjs(toTime) : null}
+                          onChange={(v:any) => {
+                            dispatch(updateToTime(moment(v).valueOf()))
+                          }}
                         />
-                    </Box>
+                    </Box> */}
                   </Box>
                 </CardContent>
               </LocalizationProvider>
@@ -209,13 +228,17 @@ export default function Campaigns() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
+
                     {rows.map((row, i: number) => {
+                      
                       let active = true
+                      const startDate: number = moment(row.endDate).valueOf()
                       const endDate: number = moment(row.endDate).valueOf()
                       const nowDate: number = Date.now()
-                      if (endDate < nowDate){
+                      if (endDate < nowDate || startDate < nowDate){
                         active = false
                       }
+
                       return <StyledTableRow key={`campaign_${i}`}>
                                 <StyledTableCell component="th" scope="row">
                                   {row.name}
@@ -242,46 +265,3 @@ export default function Campaigns() {
             </Card>
           </>)
 }
-/*
-
-
-// if (toTime){
-        // console.log(nowTime, toTime, fromTime)
-        // if(nowTime ){
-        //   shouldInclude = false
-        //   console.log("toTime", toTime)
-        //   console.log("nowTime", nowTime)
-        //   filteredCampaigns.push(campaigns[i])
-        // }
-      // }
-
-
-
-<Filters />
-<CardContent>
-  {!filteredCampaigns.length ? <Font variant="title">Nothing found</Font> : null }
-  {filteredCampaigns.map((campaign: CampaignShape, i: number) => {
-    // if (i > 10) return null
-    return <RowCampaign 
-              key={`campaign_${i}`}          
-              campaign={campaign}
-            />
-  })}
-</CardContent>
-
-    createData(1, "Lying",
-      "2021-11-01T22:24:21.086Z",
-      "2023-04-23T19:30:50.446Z",
-      9338273,
-    ),
-    createData(2, "Twice",
-      "2021-09-10T16:01:41.653Z",
-      "2023-05-28T09:41:41.446Z",
-      7718484,
-    ),
-    createData(3, "Third's a charm?",
-      "2021-09-10T16:01:41.653Z",
-      "2023-05-28T09:41:41.446Z",
-      7718484,
-    ),
-*/

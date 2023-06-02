@@ -3,6 +3,16 @@ import {CampaignsShape} from "../types"
 // Got this data from the console of https://dimik.github.io/km-test-case/
 
 export const campaignsData: CampaignsShape = [
+
+    {
+        "name": "Today",
+        "startDate": "2023-06-02T22:24:21.086Z",
+        "endDate": "2023-06-05T22:28:21.086Z",
+        "budget": 10000,
+        "id": 10,
+    },
+
+
     {
         "name": "Lying",
         "startDate": "2021-11-01T22:24:21.086Z",
