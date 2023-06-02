@@ -4,8 +4,14 @@ import {
   // CampaignShape, 
   CampaignsShape,
 } from "../types"
+
+import dayjs, { Dayjs } from 'dayjs';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
 import {
-  darken,
   styled,
   Alert,
   IconButton,
@@ -56,7 +62,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function Campaigns() {
   const pwa = usePwaSelect(selectPWA)
   const dispatch = usePwaDispatch()
-  const {campaigns, searchStr/*, toTime, fromTime*/} = pwa
+  const [value, setValue] = React.useState<Dayjs | null>(dayjs('2022-04-17'));
+  const {campaigns, searchStr, toTime, fromTime} = pwa
   function createData(
     id: number,
     name: string,
@@ -67,7 +74,6 @@ export default function Campaigns() {
     return { id, name, startDate, endDate, budget}
   }
   const rows: CampaignsShape = []
-
   const filteredCampaigns: CampaignsShape  = []
   for (let i=0; i<campaigns.length; i++){
       let shouldInclude = true
@@ -77,12 +83,9 @@ export default function Campaigns() {
           filteredCampaigns.push(campaigns[i])
         }
       }
-      
       if (shouldInclude) filteredCampaigns.push(campaigns[i])
   }
-
   for (let j=0; j<filteredCampaigns.length; j++){
-    // console.log("filteredCampaigns", filteredCampaigns[j])
     const {
       id,
       name,
@@ -133,37 +136,54 @@ export default function Campaigns() {
               </>}
               />
 
-
-              <CardContent>
-                <Box sx={{ '& > :not(style)': { m: 1 } }}>
-                  <FormControl variant="standard">
-                    <Input
-                      value={searchStr}
-                      placeholder="Filter by name"
-                      onChange={(t: any) => {
-                        dispatch(updateSearchStr(t.target.value))
-                      }}
-                      startAdornment={
-                        <InputAdornment
-                        position="start">
-                          <Icon icon="filter" />
-                        </InputAdornment>
-                      }
-                      endAdornment={
-                        <InputAdornment 
-                          position="start">
-                            <IconButton
-                              onClick={() => dispatch(updateSearchStr(""))}
-                              onMouseDown={() => dispatch(updateSearchStr(""))}
-                              edge="end">
-                            <Icon icon="refresh" />
-                            </IconButton>
-                        </InputAdornment>
-                      }
-                    />
-                  </FormControl>
-                </Box>
-              </CardContent>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <CardContent>
+                  <Box sx={{display: "flex"}}>
+                    
+                    <Box sx={{ '& > :not(style)': { m: 1 } }}>
+                      <FormControl variant="standard">
+                        <Input
+                          value={searchStr}
+                          placeholder="Filter by name"
+                          onChange={(t: any) => {
+                            dispatch(updateSearchStr(t.target.value))
+                          }}
+                          startAdornment={
+                            <InputAdornment position="start">
+                              <Icon icon="filter" />
+                            </InputAdornment>
+                          }
+                          endAdornment={
+                            <InputAdornment position="end">
+                                <IconButton
+                                  onClick={() => dispatch(updateSearchStr(""))}
+                                  onMouseDown={() => dispatch(updateSearchStr(""))}
+                                  edge="end">
+                                  <Icon icon="refresh" />
+                                </IconButton>
+                            </InputAdornment>
+                          }
+                        />
+                      </FormControl>
+                    </Box>
+                    <Box sx={{flexGrow:1}}/>
+                    <Box>
+                      <DatePicker 
+                        label="From"
+                        value={fromTime}
+                      />
+                    </Box>
+                    
+                    <Box sx={{ml:1}}>
+                        <DatePicker
+                          label="To"
+                          value={toTime}
+                          onChange={(newValue) => console.log(newValue)}
+                        />
+                    </Box>
+                  </Box>
+                </CardContent>
+              </LocalizationProvider>
 
               {!rows.length ? 
                   <Alert 
