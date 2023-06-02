@@ -156,7 +156,7 @@ export default function Campaigns() {
                               onClick={() => dispatch(updateSearchStr(""))}
                               onMouseDown={() => dispatch(updateSearchStr(""))}
                               edge="end">
-                            <Icon icon="close" />
+                            <Icon icon="refresh" />
                             </IconButton>
                         </InputAdornment>
                       }
@@ -176,15 +176,15 @@ export default function Campaigns() {
                       color="primary"
                       onClick={(e: React.MouseEvent) => {
                         e.preventDefault()
-                        console.log("reset filters")
+                        dispatch(updateSearchStr(""))
                       }}
                     >
                       <Icon icon="refresh" />
                     </IconButton>}
                     onClose={() => {
-                      console.log("reset filters")
+                      dispatch(updateSearchStr(""))
                     }}>
-                      <Font variant="title">Nothing found. Reset?</Font>
+                      <Font variant="title">No campaigns found</Font>
                   </Alert> : <TableContainer component={"div"}>
 
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">

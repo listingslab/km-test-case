@@ -16,10 +16,7 @@ const initialState: PwaReduxShape = {
   searching: false,
   fromTime: null,
   toTime: null,
-  notifyer: {
-    severity: "success",
-    message: "Hello. Please QA this app",
-  },
+  notifyer: null,
 }
 
 export const pwaSlice = createSlice({
