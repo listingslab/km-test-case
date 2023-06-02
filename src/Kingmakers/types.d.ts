@@ -5,11 +5,11 @@ import {
 
 export type CampaignShape = {
   id: number
-  name?: string
-  startDate?: string
-  endDate?: string
-  budget?: number
-  Budget?: number
+  name?: any
+  startDate?: any
+  endDate?: any
+  budget?: any
+  Budget?: any
 }
 export type CampaignsShape =Array<CampaignShape>
 

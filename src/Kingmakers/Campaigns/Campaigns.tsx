@@ -6,20 +6,28 @@ import {
 } from "../types"
 import {
   styled,
+  Alert,
   IconButton,
   Avatar,
   Card,
   CardHeader,
+  CardContent,
   TableCell,
   TableRow,
   TableContainer,
   Table,
   TableHead,
   TableBody,
+  FormControl,
+  Box,
+  InputAdornment,
+  Input,
 } from "@mui/material"
 import { tableCellClasses } from '@mui/material/TableCell'
 import {
   usePwaSelect,
+  usePwaDispatch,
+  updateSearchStr,
   selectPWA,
   Font,
   Icon,
@@ -44,39 +52,21 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }))
 
-function createData(
-  id: number,
-  name: string,
-  startDate: string,
-  endDate: string,
-  budget: number,
-) {
-
-  return { id, name, startDate, endDate, budget}
-}
-
-const rows = [
-  createData(1, "Lying",
-    "2021-11-01T22:24:21.086Z",
-    "2023-04-23T19:30:50.446Z",
-    9338273,
-  ),
-  createData(2, "Twice",
-    "2021-09-10T16:01:41.653Z",
-    "2023-05-28T09:41:41.446Z",
-    7718484,
-  ),
-  createData(3, "Third's a charm?",
-    "2021-09-10T16:01:41.653Z",
-    "2023-05-28T09:41:41.446Z",
-    7718484,
-  ),
-]
-
-
 export default function Campaigns() {
   const pwa = usePwaSelect(selectPWA)
+  const dispatch = usePwaDispatch()
   const {campaigns, searchStr/*, toTime, fromTime*/} = pwa
+  function createData(
+    id: number,
+    name: string,
+    startDate: string,
+    endDate: string,
+    budget: number,
+  ) {
+    return { id, name, startDate, endDate, budget}
+  }
+  const rows: CampaignsShape = []
+
   const filteredCampaigns: CampaignsShape  = []
   for (let i=0; i<campaigns.length; i++){
       let shouldInclude = true
@@ -90,6 +80,29 @@ export default function Campaigns() {
       if (shouldInclude) filteredCampaigns.push(campaigns[i])
   }
 
+  for (let j=0; j<filteredCampaigns.length; j++){
+    // console.log("filteredCampaigns", filteredCampaigns[j])
+    const {
+      id,
+      name,
+      startDate,
+      endDate,
+      budget,
+    } = filteredCampaigns[j]
+    rows.push(createData(
+      id,
+      name, 
+      startDate,
+      endDate,
+      budget,
+    ))
+  }
+
+  const onSearchChange = (searchStr: string) => {
+    // updateSearchStr
+    console.log("onSearchChange, updateSearchStr")
+  }
+
   return (<>
             <Card sx={{my:1}}>
               <CardHeader
@@ -101,7 +114,6 @@ export default function Campaigns() {
                           </Font>}
                 avatar={<Avatar src="/png/logo192.png" alt={"KM Test Case"}/>}
                 action={<>
-
                 <IconButton
                   size="small"
                   color="primary"
@@ -112,8 +124,6 @@ export default function Campaigns() {
                 >
                   <Icon icon="code" />
                 </IconButton>
-
-
                 <IconButton
                   size="small"
                   color="primary"
@@ -127,7 +137,60 @@ export default function Campaigns() {
               </>}
               />
 
-              <TableContainer component={"div"}>
+
+              <CardContent>
+                <Box sx={{ '& > :not(style)': { m: 1 } }}>
+                  <FormControl variant="standard">
+                    <Input
+                      value={searchStr}
+                      placeholder="Filter by name"
+                      onChange={(t: any) => {
+                        dispatch(updateSearchStr(t.target.value))
+                      }}
+                      startAdornment={
+                        <InputAdornment
+                        position="start">
+                          <Icon icon="filter" />
+                        </InputAdornment>
+                      }
+                      endAdornment={
+                        <InputAdornment 
+                          position="start">
+                            <IconButton
+                              onClick={() => dispatch(updateSearchStr(""))}
+                              onMouseDown={() => dispatch(updateSearchStr(""))}
+                              edge="end">
+                            <Icon icon="close" />
+                            </IconButton>
+                        </InputAdornment>
+                      }
+                    />
+                  </FormControl>
+                </Box>
+              </CardContent>
+
+              {!rows.length ? 
+                  <Alert 
+                    sx={{m:2}}
+                    icon={false}
+                    variant="standard" 
+                    severity="success"
+                    action={<IconButton
+                      size="small"
+                      color="primary"
+                      onClick={(e: React.MouseEvent) => {
+                        e.preventDefault()
+                        console.log("reset filters")
+                      }}
+                    >
+                      <Icon icon="refresh" />
+                    </IconButton>}
+                    onClose={() => {
+                      console.log("reset filters")
+                    }}>
+                      Nothing found. Reset?
+                  </Alert> : <TableContainer component={"div"}>
+
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                   <TableHead>
                     <TableRow>
@@ -149,38 +212,31 @@ export default function Campaigns() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-
-                    {rows.map((row) => {
-                      return <StyledTableRow key={row.name}>
-                        <StyledTableCell component="th" scope="row">
-                          {row.name}
-                        </StyledTableCell>
-                        <StyledTableCell align="left">
-                          {moment(row.startDate).format("DD/MM/YY")}
-                        </StyledTableCell>
-                        <StyledTableCell align="left">
-                          {moment(row.endDate).format("DD/MM/YY")}
-                        </StyledTableCell>
-                        <StyledTableCell align="right">
-                          <Icon icon="tick" color="success" />
-                        </StyledTableCell>
-                        <StyledTableCell align="right">
-                          ${Math.floor(row.budget/1000)}K
-                        </StyledTableCell>
-                      </StyledTableRow>
-                    })}
-
+                    {rows.map((row, i: number) => {
+                      return <StyledTableRow key={`campaign_${i}`}>
+                                <StyledTableCell component="th" scope="row">
+                                  {row.name}
+                                </StyledTableCell>
+                                <StyledTableCell align="left">
+                                  {row.startDate ? moment(row.startDate).format("DD/MM/YY") : null}
+                                </StyledTableCell>
+                                <StyledTableCell align="left">
+                                  {row.endDate ? moment(row.endDate).format("DD/MM/YY") : null}
+                                </StyledTableCell>
+                                <StyledTableCell align="right">
+                                  <Icon icon="tick" color="success" />
+                                </StyledTableCell>
+                                <StyledTableCell align="right">
+                                  {row.budget ? <>${Math.floor(row.budget/1000)}K</> : null }
+                                </StyledTableCell>
+                              </StyledTableRow>
+                            })}
                   </TableBody>
                 </Table>
-              </TableContainer>
-
-              
-
+              </TableContainer> }
             </Card>
-            
           </>)
 }
-
 /*
 
 
@@ -207,4 +263,20 @@ export default function Campaigns() {
             />
   })}
 </CardContent>
+
+    createData(1, "Lying",
+      "2021-11-01T22:24:21.086Z",
+      "2023-04-23T19:30:50.446Z",
+      9338273,
+    ),
+    createData(2, "Twice",
+      "2021-09-10T16:01:41.653Z",
+      "2023-05-28T09:41:41.446Z",
+      7718484,
+    ),
+    createData(3, "Third's a charm?",
+      "2021-09-10T16:01:41.653Z",
+      "2023-05-28T09:41:41.446Z",
+      7718484,
+    ),
 */
