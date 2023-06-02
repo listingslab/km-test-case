@@ -1,4 +1,4 @@
-## Listingslab's Kingmakers App
+## KM Test Case App
 
 Develop a simple React application that displays a list of campaigns that can be filtered by campaign name and date range
 
