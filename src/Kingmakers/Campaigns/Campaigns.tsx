@@ -5,6 +5,9 @@ import {
 } from "../types"
 import {
   styled,
+  Box,
+  IconButton,
+  Avatar,
   Card,
   CardHeader,
   TableCell,
@@ -14,6 +17,7 @@ import {
   Table,
   TableHead,
   TableBody,
+  CardActions,
 } from "@mui/material"
 import { tableCellClasses } from '@mui/material/TableCell'
 import {
@@ -87,12 +91,25 @@ export default function Campaigns() {
   }
 
   return (<>
-            <Card>
+            <Card sx={{my:1}}>
               <CardHeader
                 title={<Font variant="title">
                           Campaigns
                         </Font>}
-                avatar={<Icon icon="rocket" color="primary" />}
+                subheader={<Font>
+                            PWA that displays a filterable list of Campaigns
+                          </Font>}
+                avatar={<Avatar src="/png/logo192.png" alt={"KM Test Case"}/>}
+                action={<IconButton
+                  size="small"
+                  color="primary"
+                  onClick={(e: React.MouseEvent) => {
+                    e.preventDefault()
+                    window.open("https://github.com/listingslab/km-test-case", "_blank")
+                  }}
+                >
+                  <Icon icon="github" />
+                </IconButton>}
               />
 
 
@@ -124,7 +141,10 @@ export default function Campaigns() {
                 </Table>
               </TableContainer>
 
+              
+
             </Card>
+            
           </>)
 }
 

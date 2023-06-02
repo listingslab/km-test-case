@@ -13,13 +13,6 @@ export type CampaignShape = {
 }
 export type CampaignsShape =Array<CampaignShape>
 
-
-export type NotifyShape = {
-  severity: AlertColor
-  message?: string
-}
-
-
 export type PwaReduxShape = {
   started: boolean
   data?: any
@@ -34,9 +27,10 @@ export type PwaReduxShape = {
   notifyer: NotifyShape|null
 }
 
-
-
-
+export type NotifyShape = {
+  severity: AlertColor
+  message?: string
+}
 
 export type SearchShape = {
   type?: string

@@ -1,6 +1,9 @@
-## [KM Test Case App](./src/Kingmakers/README.md)
 
-### You can see the working application [here](https://dimik.github.io/km-test-case/).
+## [KM Test Case](./src/Kingmakers/README.md)
+
+____________
+
+### [https://dimik.github.io/km-test-case](https://dimik.github.io/km-test-case/).
 
 ### The assignee is required to develop a simple React application that displays a list of campaigns that can be filtered by campaign name and date range.
 Requirements:
