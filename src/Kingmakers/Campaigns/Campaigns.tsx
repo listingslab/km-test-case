@@ -5,6 +5,7 @@ import {
   CampaignsShape,
 } from "../types"
 import {
+  darken,
   styled,
   Alert,
   IconButton,
@@ -35,8 +36,8 @@ import {
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.common.white,
+    backgroundColor: theme.palette.common.white,
+    color: theme.palette.primary.main,
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14,
@@ -98,11 +99,6 @@ export default function Campaigns() {
     ))
   }
 
-  const onSearchChange = (searchStr: string) => {
-    // updateSearchStr
-    console.log("onSearchChange, updateSearchStr")
-  }
-
   return (<>
             <Card sx={{my:1}}>
               <CardHeader
@@ -160,7 +156,7 @@ export default function Campaigns() {
                               onClick={() => dispatch(updateSearchStr(""))}
                               onMouseDown={() => dispatch(updateSearchStr(""))}
                               edge="end">
-                            <Icon icon="close" />
+                            <Icon icon="refresh" />
                             </IconButton>
                         </InputAdornment>
                       }
@@ -180,34 +176,36 @@ export default function Campaigns() {
                       color="primary"
                       onClick={(e: React.MouseEvent) => {
                         e.preventDefault()
-                        console.log("reset filters")
+                        dispatch(updateSearchStr(""))
                       }}
                     >
                       <Icon icon="refresh" />
                     </IconButton>}
                     onClose={() => {
-                      console.log("reset filters")
+                      dispatch(updateSearchStr(""))
                     }}>
-                      Nothing found. Reset?
+                      <Font variant="title">No campaigns found</Font>
                   </Alert> : <TableContainer component={"div"}>
 
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                   <TableHead>
                     <TableRow>
                       <StyledTableCell>
-                        Name
+                        <Font variant="title">
+                          Campaign
+                        </Font>
                       </StyledTableCell>
                       <StyledTableCell align="left">
-                        From
+                        <Font variant="title">From</Font>
                       </StyledTableCell>
                       <StyledTableCell align="left">
-                        To
+                        <Font variant="title">To</Font>
                       </StyledTableCell>
                       <StyledTableCell align="right">
-                        Status
+                      <Font variant="title" align="right">Status</Font>
                       </StyledTableCell>
                       <StyledTableCell align="right">
-                        Budget
+                        <Font variant="title" align="right">Budget</Font>
                       </StyledTableCell>
                     </TableRow>
                   </TableHead>
