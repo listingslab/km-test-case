@@ -1,4 +1,5 @@
 import React from "react"
+import moment from "moment"
 import {
   // CampaignShape, 
   CampaignsShape,
@@ -12,7 +13,6 @@ import {
   TableCell,
   TableRow,
   TableContainer,
-  Paper,
   Table,
   TableHead,
   TableBody,
@@ -27,7 +27,7 @@ import {
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.black,
+    backgroundColor: theme.palette.primary.main,
     color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
@@ -39,28 +39,38 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
     backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
   '&:last-child td, &:last-child th': {
     border: 0,
   },
 }))
 
 function createData(
+  id: number,
   name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number,
+  startDate: string,
+  endDate: string,
+  budget: number,
 ) {
-  return { name, calories, fat, carbs, protein }
+
+  return { id, name, startDate, endDate, budget}
 }
 
 const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
+  createData(1, "Lying",
+    "2021-11-01T22:24:21.086Z",
+    "2023-04-23T19:30:50.446Z",
+    9338273,
+  ),
+  createData(2, "Twice",
+    "2021-09-10T16:01:41.653Z",
+    "2023-05-28T09:41:41.446Z",
+    7718484,
+  ),
+  createData(3, "Third's a charm?",
+    "2021-09-10T16:01:41.653Z",
+    "2023-05-28T09:41:41.446Z",
+    7718484,
+  ),
 ]
 
 
@@ -76,15 +86,7 @@ export default function Campaigns() {
           filteredCampaigns.push(campaigns[i])
         }
       }
-      // if (toTime){
-        // console.log(nowTime, toTime, fromTime)
-        // if(nowTime ){
-        //   shouldInclude = false
-        //   console.log("toTime", toTime)
-        //   console.log("nowTime", nowTime)
-        //   filteredCampaigns.push(campaigns[i])
-        // }
-      // }
+      
       if (shouldInclude) filteredCampaigns.push(campaigns[i])
   }
 
@@ -98,7 +100,21 @@ export default function Campaigns() {
                             PWA that displays a filterable list of Campaigns
                           </Font>}
                 avatar={<Avatar src="/png/logo192.png" alt={"KM Test Case"}/>}
-                action={<IconButton
+                action={<>
+
+                <IconButton
+                  size="small"
+                  color="primary"
+                  onClick={(e: React.MouseEvent) => {
+                    e.preventDefault()
+                    window.open("https://github.com/listingslab/km-test-case/blob/master/src/Kingmakers/Campaigns/campaignsData.ts", "_blank")
+                  }}
+                >
+                  <Icon icon="code" />
+                </IconButton>
+
+
+                <IconButton
                   size="small"
                   color="primary"
                   onClick={(e: React.MouseEvent) => {
@@ -107,34 +123,53 @@ export default function Campaigns() {
                   }}
                 >
                   <Icon icon="github" />
-                </IconButton>}
+                </IconButton>
+              </>}
               />
 
-
-
-              <TableContainer component={Paper}>
+              <TableContainer component={"div"}>
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                   <TableHead>
                     <TableRow>
-                      <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-                      <StyledTableCell align="right">Calories</StyledTableCell>
-                      <StyledTableCell align="right">Fat&nbsp(g)</StyledTableCell>
-                      <StyledTableCell align="right">Carbs&nbsp(g)</StyledTableCell>
-                      <StyledTableCell align="right">Protein&nbsp(g)</StyledTableCell>
+                      <StyledTableCell>
+                        Name
+                      </StyledTableCell>
+                      <StyledTableCell align="left">
+                        From
+                      </StyledTableCell>
+                      <StyledTableCell align="left">
+                        To
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        Status
+                      </StyledTableCell>
+                      <StyledTableCell align="right">
+                        Budget
+                      </StyledTableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {rows.map((row) => (
-                      <StyledTableRow key={row.name}>
+
+                    {rows.map((row) => {
+                      return <StyledTableRow key={row.name}>
                         <StyledTableCell component="th" scope="row">
                           {row.name}
                         </StyledTableCell>
-                        <StyledTableCell align="right">{row.calories}</StyledTableCell>
-                        <StyledTableCell align="right">{row.fat}</StyledTableCell>
-                        <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-                        <StyledTableCell align="right">{row.protein}</StyledTableCell>
+                        <StyledTableCell align="left">
+                          {moment(row.startDate).format("DD/MM/YY")}
+                        </StyledTableCell>
+                        <StyledTableCell align="left">
+                          {moment(row.endDate).format("DD/MM/YY")}
+                        </StyledTableCell>
+                        <StyledTableCell align="right">
+                          <Icon icon="tick" color="success" />
+                        </StyledTableCell>
+                        <StyledTableCell align="right">
+                          ${Math.floor(row.budget/1000)}K
+                        </StyledTableCell>
                       </StyledTableRow>
-                    ))}
+                    })}
+
                   </TableBody>
                 </Table>
               </TableContainer>
@@ -147,6 +182,20 @@ export default function Campaigns() {
 }
 
 /*
+
+
+// if (toTime){
+        // console.log(nowTime, toTime, fromTime)
+        // if(nowTime ){
+        //   shouldInclude = false
+        //   console.log("toTime", toTime)
+        //   console.log("nowTime", nowTime)
+        //   filteredCampaigns.push(campaigns[i])
+        // }
+      // }
+
+
+
 <Filters />
 <CardContent>
   {!filteredCampaigns.length ? <Font variant="title">Nothing found</Font> : null }

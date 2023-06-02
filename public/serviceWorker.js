@@ -21,7 +21,6 @@ const RUNTIME = 'runtime';
 const PRECACHE_URLS = [
   'index.html',
   './',
-  'png/pimoroni/board.webp',
   'png/logo192.png',
 ];
 
