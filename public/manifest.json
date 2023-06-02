@@ -1,6 +1,6 @@
 {
-  "name": "Kingmakers",
-  "short_name": "Kingmakers",
+  "name": "KM Test",
+  "short_name": "KM Test",
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#1F760D",
