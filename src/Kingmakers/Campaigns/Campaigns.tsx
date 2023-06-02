@@ -1,4 +1,5 @@
 import React from "react"
+import moment from "moment"
 import {
   // CampaignShape, 
   CampaignsShape,
@@ -50,16 +51,9 @@ function createData(
   endDate: string,
   budget: number,
 ) {
+
   return { id, name, startDate, endDate, budget}
 }
-
-
-// "name": "Lying",
-// "startDate": "2021-11-01T22:24:21.086Z",
-// "endDate": "2023-04-23T19:30:50.446Z",
-// "budget": 9338273,
-// "id": 1
-
 
 const rows = [
   createData(1, "Lying",
@@ -68,6 +62,11 @@ const rows = [
     9338273,
   ),
   createData(2, "Twice",
+    "2021-09-10T16:01:41.653Z",
+    "2023-05-28T09:41:41.446Z",
+    7718484,
+  ),
+  createData(3, "Third's a charm?",
     "2021-09-10T16:01:41.653Z",
     "2023-05-28T09:41:41.446Z",
     7718484,
@@ -128,8 +127,6 @@ export default function Campaigns() {
               </>}
               />
 
-
-
               <TableContainer component={"div"}>
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
                   <TableHead>
@@ -152,26 +149,27 @@ export default function Campaigns() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
+
                     {rows.map((row) => {
                       return <StyledTableRow key={row.name}>
                         <StyledTableCell component="th" scope="row">
                           {row.name}
                         </StyledTableCell>
                         <StyledTableCell align="left">
-                          {row.startDate}
+                          {moment(row.startDate).format("DD/MM/YY")}
                         </StyledTableCell>
                         <StyledTableCell align="left">
-                          {row.endDate}
-                        </StyledTableCell>
-                        
-                        <StyledTableCell align="right">
-                          <Icon icon="tick" color="warning" />
+                          {moment(row.endDate).format("DD/MM/YY")}
                         </StyledTableCell>
                         <StyledTableCell align="right">
-                          $ {row.budget}
+                          <Icon icon="tick" color="success" />
+                        </StyledTableCell>
+                        <StyledTableCell align="right">
+                          ${Math.floor(row.budget/1000)}K
                         </StyledTableCell>
                       </StyledTableRow>
                     })}
+
                   </TableBody>
                 </Table>
               </TableContainer>
