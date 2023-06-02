@@ -4,13 +4,9 @@ import {
   // CampaignShape, 
   CampaignsShape,
 } from "../types"
-
-import dayjs, { Dayjs } from 'dayjs';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-
 import {
   styled,
   Alert,
@@ -62,7 +58,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function Campaigns() {
   const pwa = usePwaSelect(selectPWA)
   const dispatch = usePwaDispatch()
-  const [value, setValue] = React.useState<Dayjs | null>(dayjs('2022-04-17'));
   const {campaigns, searchStr, toTime, fromTime} = pwa
   function createData(
     id: number,
@@ -105,41 +100,26 @@ export default function Campaigns() {
   return (<>
             <Card sx={{my:1}}>
               <CardHeader
-                title={<Font variant="title">
-                          Campaigns
-                        </Font>}
-                subheader={<Font>
-                            PWA that displays a filterable list of Campaigns
-                          </Font>}
+                title={<Font variant="title">Campaigns</Font>}
+                subheader={<Font>PWA that displays a filterable list of Campaigns</Font>}
                 avatar={<Avatar src="/png/logo192.png" alt={"KM Test Case"}/>}
                 action={<>
-                <IconButton
-                  size="small"
-                  color="primary"
-                  onClick={(e: React.MouseEvent) => {
-                    e.preventDefault()
-                    window.open("https://github.com/listingslab/km-test-case/blob/master/src/Kingmakers/Campaigns/campaignsData.ts", "_blank")
-                  }}
-                >
-                  <Icon icon="code" />
-                </IconButton>
-                <IconButton
-                  size="small"
-                  color="primary"
-                  onClick={(e: React.MouseEvent) => {
-                    e.preventDefault()
-                    window.open("https://github.com/listingslab/km-test-case", "_blank")
-                  }}
-                >
-                  <Icon icon="github" />
-                </IconButton>
-              </>}
+                  <IconButton
+                    size="small"
+                    color="primary"
+                    onClick={(e: React.MouseEvent) => {
+                      e.preventDefault()
+                      window.open("https://github.com/listingslab/km-test-case", "_blank")
+                    }}
+                  >
+                    <Icon icon="github" />
+                  </IconButton>
+                </>}
               />
 
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <CardContent>
                   <Box sx={{display: "flex"}}>
-                    
                     <Box sx={{ '& > :not(style)': { m: 1 } }}>
                       <FormControl variant="standard">
                         <Input
@@ -173,7 +153,6 @@ export default function Campaigns() {
                         value={fromTime}
                       />
                     </Box>
-                    
                     <Box sx={{ml:1}}>
                         <DatePicker
                           label="To"
@@ -221,8 +200,8 @@ export default function Campaigns() {
                       <StyledTableCell align="left">
                         <Font variant="title">To</Font>
                       </StyledTableCell>
-                      <StyledTableCell align="right">
-                      <Font variant="title" align="right">Status</Font>
+                      <StyledTableCell align="left">
+                        <Font variant="title" align="left">Status</Font>
                       </StyledTableCell>
                       <StyledTableCell align="right">
                         <Font variant="title" align="right">Budget</Font>
@@ -231,6 +210,12 @@ export default function Campaigns() {
                   </TableHead>
                   <TableBody>
                     {rows.map((row, i: number) => {
+                      let active = true
+                      const endDate: number = moment(row.endDate).valueOf()
+                      const nowDate: number = Date.now()
+                      if (endDate < nowDate){
+                        active = false
+                      }
                       return <StyledTableRow key={`campaign_${i}`}>
                                 <StyledTableCell component="th" scope="row">
                                   {row.name}
@@ -241,8 +226,10 @@ export default function Campaigns() {
                                 <StyledTableCell align="left">
                                   {row.endDate ? moment(row.endDate).format("DD/MM/YY") : null}
                                 </StyledTableCell>
-                                <StyledTableCell align="right">
-                                  <Icon icon="tick" color="success" />
+                                <StyledTableCell align="left">
+                                  <Icon icon={active ? "tick" : "close" } 
+                                        color={active ? "success" : "warning" }
+                                  />
                                 </StyledTableCell>
                                 <StyledTableCell align="right">
                                   {row.budget ? <>${Math.floor(row.budget/1000)}K</> : null }

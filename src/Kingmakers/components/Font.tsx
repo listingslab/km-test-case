@@ -16,8 +16,9 @@ export function Font(props: any) {
   let lineHeight: any = "1.2rem"
   if (align) textAlign = align
   if (variant === "title") {
-    textfontSize = "1.1rem"
-    lineHeight = "1.2rem"
+    textfontSize = "1rem"
+    lineHeight = "1.1rem"
+    c = theme.palette.primary.main
   }
   if (variant === "giant") {
     textfontSize = "1.6rem"
