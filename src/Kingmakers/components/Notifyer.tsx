@@ -36,10 +36,9 @@ export default function Notifyer() {
       onClose={ closeSnackbar }
     >
       <Alert 
-        variant="standard"
+        variant="filled"
         onClose={ closeSnackbar } 
-        severity={ severity }
-        sx={{ width: '100%', background: "white" }}>
+        severity={ severity }>
           { message }
       </Alert>
     </Snackbar>
