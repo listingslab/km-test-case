@@ -1,6 +1,6 @@
 // Kingmakers
 import Kingmakers from "./Kingmakers"
-import {setGlobals} from "./setGlobals"
+import {registerAddCampaigns} from "./registerAddCampaigns"
 import {
   Campaigns,
 } from "./Campaigns"
@@ -35,7 +35,7 @@ import { updateToTime } from "./redux/actions/updateToTime"
 
 export {
   Kingmakers,
-  setGlobals,
+  registerAddCampaigns,
   Campaigns,
   AppShell,
   theme,

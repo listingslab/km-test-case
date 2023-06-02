@@ -5,7 +5,7 @@ import {
   startApp,
   selectPWA,
   Campaigns,
-  setGlobals,
+  registerAddCampaigns,
 } from "../"
 
 export default function AppShell() {
@@ -14,7 +14,7 @@ export default function AppShell() {
   
   React.useEffect(() => {
     const {started} = pwa
-    setGlobals()
+    registerAddCampaigns()
     if (!started) dispatch(startApp())
   }, [pwa, dispatch])
 
