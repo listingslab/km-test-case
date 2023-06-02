@@ -12,7 +12,6 @@ import {
   TableCell,
   TableRow,
   TableContainer,
-  Paper,
   Table,
   TableHead,
   TableBody,
@@ -39,28 +38,40 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   '&:nth-of-type(odd)': {
     backgroundColor: theme.palette.action.hover,
   },
-  // hide last border
   '&:last-child td, &:last-child th': {
     border: 0,
   },
 }))
 
 function createData(
+  id: number,
   name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number,
+  startDate: string,
+  endDate: string,
+  budget: number,
 ) {
-  return { name, calories, fat, carbs, protein }
+  return { id, name, startDate, endDate, budget}
 }
 
+
+// "name": "Lying",
+// "startDate": "2021-11-01T22:24:21.086Z",
+// "endDate": "2023-04-23T19:30:50.446Z",
+// "budget": 9338273,
+// "id": 1
+
+
 const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
+  createData(1, "Lying",
+    "2021-11-01T22:24:21.086Z",
+    "2023-04-23T19:30:50.446Z",
+    9338273,
+  ),
+  createData(2, "Twice",
+    "2021-09-10T16:01:41.653Z",
+    "2023-05-28T09:41:41.446Z",
+    7718484,
+  ),
 ]
 
 
@@ -76,15 +87,7 @@ export default function Campaigns() {
           filteredCampaigns.push(campaigns[i])
         }
       }
-      // if (toTime){
-        // console.log(nowTime, toTime, fromTime)
-        // if(nowTime ){
-        //   shouldInclude = false
-        //   console.log("toTime", toTime)
-        //   console.log("nowTime", nowTime)
-        //   filteredCampaigns.push(campaigns[i])
-        // }
-      // }
+      
       if (shouldInclude) filteredCampaigns.push(campaigns[i])
   }
 
@@ -105,7 +108,7 @@ export default function Campaigns() {
                   color="primary"
                   onClick={(e: React.MouseEvent) => {
                     e.preventDefault()
-                    window.open("https://raw.githubusercontent.com/listingslab/km-test-case/master/test.json", "_blank")
+                    window.open("https://github.com/listingslab/km-test-case/blob/master/src/Kingmakers/Campaigns/campaignsData.ts", "_blank")
                   }}
                 >
                   <Icon icon="code" />
@@ -149,17 +152,26 @@ export default function Campaigns() {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {rows.map((row) => (
-                      <StyledTableRow key={row.name}>
+                    {rows.map((row) => {
+                      return <StyledTableRow key={row.name}>
                         <StyledTableCell component="th" scope="row">
                           {row.name}
                         </StyledTableCell>
-                        <StyledTableCell align="left">{row.calories}</StyledTableCell>
-                        <StyledTableCell align="left">{row.fat}</StyledTableCell>
-                        <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-                        <StyledTableCell align="right">{row.protein}</StyledTableCell>
+                        <StyledTableCell align="left">
+                          {row.startDate}
+                        </StyledTableCell>
+                        <StyledTableCell align="left">
+                          {row.endDate}
+                        </StyledTableCell>
+                        
+                        <StyledTableCell align="right">
+                          <Icon icon="tick" color="warning" />
+                        </StyledTableCell>
+                        <StyledTableCell align="right">
+                          $ {row.budget}
+                        </StyledTableCell>
                       </StyledTableRow>
-                    ))}
+                    })}
                   </TableBody>
                 </Table>
               </TableContainer>
@@ -172,6 +184,20 @@ export default function Campaigns() {
 }
 
 /*
+
+
+// if (toTime){
+        // console.log(nowTime, toTime, fromTime)
+        // if(nowTime ){
+        //   shouldInclude = false
+        //   console.log("toTime", toTime)
+        //   console.log("nowTime", nowTime)
+        //   filteredCampaigns.push(campaigns[i])
+        // }
+      // }
+
+
+
 <Filters />
 <CardContent>
   {!filteredCampaigns.length ? <Font variant="title">Nothing found</Font> : null }
