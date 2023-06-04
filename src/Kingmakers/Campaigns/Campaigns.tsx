@@ -3,10 +3,6 @@ import moment from "moment"
 import {
   CampaignsShape,
 } from "../types"
-// import dayjs, { Dayjs } from 'dayjs'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import {
   styled,
   Alert,
@@ -28,16 +24,16 @@ import {
 } from "@mui/material"
 import { tableCellClasses } from '@mui/material/TableCell'
 import {
+  NoCampaigns,
   usePwaSelect,
   usePwaDispatch,
   updateSearchStr,
   selectPWA,
   Font,
   Icon,
-  // updateFromTime,
-  // updateToTime,
-  // setPwaKey,
 } from ".."
+
+
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -108,7 +104,7 @@ export default function Campaigns() {
       ))
     }
   }
-
+  const hasCampaigns = rows.length
   return (<>
             <Card sx={{my:1}}>
               <CardHeader
@@ -129,7 +125,6 @@ export default function Campaigns() {
                 </>}
               />
 
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <CardContent>
                   <Box sx={{display: "flex"}}>
                     <Box sx={{ '& > :not(style)': { m: 1 } }}>
@@ -181,31 +176,14 @@ export default function Campaigns() {
                     </Box> */}
                   </Box>
                 </CardContent>
-              </LocalizationProvider>
-
-              {!rows.length ? 
-                  <Alert 
-                    sx={{m:2}}
-                    icon={false}
-                    variant="standard" 
-                    severity="success"
-                    action={<IconButton
-                      size="small"
-                      color="primary"
-                      onClick={(e: React.MouseEvent) => {
-                        e.preventDefault()
-                        dispatch(updateSearchStr(""))
-                      }}
-                    >
-                      <Icon icon="refresh" />
-                    </IconButton>}
-                    onClose={() => {
-                      dispatch(updateSearchStr(""))
-                    }}>
-                      <Font variant="title">No campaigns found</Font>
-                  </Alert> : <TableContainer component={"div"}>
+                
+                {!hasCampaigns ? <NoCampaigns /> : null}
+                
+              
+              <TableContainer component={"div"}>
 
                 <Table sx={{ minWidth: 700 }} aria-label="customized table">
+                  
                   <TableHead>
                     <TableRow>
                       <StyledTableCell>
@@ -227,6 +205,7 @@ export default function Campaigns() {
                       </StyledTableCell>
                     </TableRow>
                   </TableHead>
+
                   <TableBody>
 
                     {rows.map((row, i: number) => {
@@ -261,7 +240,7 @@ export default function Campaigns() {
                             })}
                   </TableBody>
                 </Table>
-              </TableContainer> }
+              </TableContainer>
             </Card>
           </>)
 }
