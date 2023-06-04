@@ -1,4 +1,6 @@
 import React from "react"
+import dayjs from "dayjs"
+import isBetween from "dayjs/plugin/isBetween"
 import {
   CampaignsShape,
 } from "../types"
@@ -21,7 +23,8 @@ import {
 import { tableCellClasses } from '@mui/material/TableCell'
 import {
   Calendar,
-  DateFilter,
+  SelectDate,
+  DeselectDate, 
   NoCampaigns,
   usePwaSelect,
   usePwaDispatch,
@@ -54,7 +57,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function Campaigns() {
   const pwa = usePwaSelect(selectPWA)
   const dispatch = usePwaDispatch()
-  const {campaigns, searchStr} = pwa
+  const {campaigns, searchStr, fromDate, toDate} = pwa
   function createData(
     id: number,
     name: string,
@@ -74,8 +77,17 @@ export default function Campaigns() {
           filteredCampaigns.push(campaigns[i])
         }
       }
-      if (inc) filteredCampaigns.push(campaigns[i])
+      let excludeByDate = false
+      if (fromDate){
+        if (dayjs(fromDate).isAfter(dayjs(campaigns[i].startDate))) excludeByDate = true
+      }
+      if (toDate){
+        if (dayjs(toDate).isAfter(dayjs(campaigns[i].endDate))) excludeByDate = true
+      }
+      
+      if (inc && !excludeByDate) filteredCampaigns.push(campaigns[i])
   }
+
   for (let j=0; j<filteredCampaigns.length; j++){
     let visible = true
     const { id, name, startDate, endDate, budget,
@@ -98,22 +110,18 @@ export default function Campaigns() {
               <CardHeader
                 title={<Font variant="title">Campaigns</Font>}
                 subheader={<Font>PWA that displays a filterable list of Campaigns</Font>}
-                avatar={<Avatar src="/png/logo192.png" alt={"KM Test Case"}/>}
-                action={<>
-                  <IconButton
-                    size="small"
-                    color="primary"
-                    onClick={(e: React.MouseEvent) => {
-                      e.preventDefault()
-                      window.open("https://github.com/listingslab/km-test-case", "_blank")
-                    }}
-                  >
-                    <Icon icon="github" />
-                  </IconButton>
-                </>}
-              />
+                avatar={<IconButton
+                  size="small"
+                  color="primary"
+                  onClick={(e: React.MouseEvent) => {
+                    e.preventDefault()
+                    window.open("https://github.com/listingslab/km-test-case", "_blank")
+                  }}>
+                  <Avatar src="/png/logo192.png" alt={"KM Test Case"}/>
+                </IconButton>
+                } />
               
-              <Calendar />
+                <Calendar />
 
                 <Box sx={{display: "flex"}}>
                   <Box sx={{ '& > :not(style)': { m: 2 } }}>
@@ -139,33 +147,42 @@ export default function Campaigns() {
                       />
                     </FormControl>
                   </Box>
-                <DateFilter id="f"/>
-                <DateFilter id="t"/>
+
+                  <Box sx={{m:1.5}}>
+                    <SelectDate mode="from"/>
+                    <DeselectDate mode="from"/>
+                  </Box>
+                  <Box sx={{m:1.5}}>
+                    <SelectDate mode="to"/>
+                    <DeselectDate mode="to"/>
+                  </Box>
+
               </Box>
                 
               {!hasCampaigns ? <NoCampaigns /> : 
                 
-              
               <TableContainer component={"div"}>
                 <Table sx={{ minWidth: 500 }} aria-label="customized table">
                   <TableInfo />
                   <TableBody>
                     {rows.map((row, i: number) => {
-                      let active = true
+                      const {startDate, endDate} = row
+                      const op: boolean = false
+                      if (op) console.log(isBetween)
+                      const active = dayjs().isBetween(startDate, dayjs(endDate))
                       return <StyledTableRow key={`campaign_${i}`}>
                                 <StyledTableCell component="th" scope="row">
                                   {row.name}
                                 </StyledTableCell>
                                 <StyledTableCell align="left">
-                                  {row.startDate ? row.startDate : null}
+                                  {row.startDate ? dayjs(row.startDate).format("DD/MM/YY") : null}
                                 </StyledTableCell>
                                 <StyledTableCell align="left">
-                                  {row.endDate ? row.endDate : null}
+                                  {row.endDate ? dayjs(row.endDate).format("DD/MM/YY") : null}
                                 </StyledTableCell>
                                 <StyledTableCell align="left">
                                   <Icon icon={active ? "tick" : "close" } 
-                                        color={active ? "success" : "warning" }
-                                  />
+                                        color={active ? "success" : "warning" } />
                                 </StyledTableCell>
                                 <StyledTableCell align="right">
                                   {row.budget ? <>${Math.floor(row.budget/1000)}K</> : null }

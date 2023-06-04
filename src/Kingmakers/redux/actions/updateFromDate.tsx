@@ -1,7 +1,7 @@
 import { setPwaKey } from "../.."
 
 export const updateFromDate =
-  (fromDate: string): any =>
+  (fromDate: string|null): any =>
   async (dispatch: any) => {
     try {
       dispatch(setPwaKey({ key: "fromDate", value: fromDate }))

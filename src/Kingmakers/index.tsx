@@ -4,9 +4,10 @@ import {registerAddCampaigns} from "./registerAddCampaigns"
 import {
   Campaigns,
   NoCampaigns,
-  DateFilter,
   TableInfo,
   Calendar,
+  SelectDate,
+  DeselectDate,
 } from "./Campaigns"
 // Components
 import AppShell from "./components/AppShell"
@@ -31,6 +32,7 @@ import {selectPWA, setPwaKey} from "./redux/pwaReducer"
 import {store} from "./redux/store"
 import {persistor} from "./redux/store"
 import { startApp } from "./redux/actions/startApp"
+import { notify } from "./redux/actions/notify"
 import { setCurrency } from "./redux/actions/setCurrency"
 import { onUpdate } from "./redux/actions/onUpdate"
 import { updateSearchStr } from "./redux/actions/updateSearchStr"
@@ -45,6 +47,7 @@ export {
   registerAddCampaigns,
   Campaigns,
   AppShell,
+  notify,
   theme,
   store,
   persistor,
@@ -70,9 +73,10 @@ export {
   updateToDate,
   addNewCampaign,
   NoCampaigns,
-  DateFilter,
   TableInfo,
   Calendar,
   toggleCalendar,
   updateCalendarMode,
+  SelectDate,
+  DeselectDate,
 }
