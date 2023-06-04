@@ -15,11 +15,9 @@ const initialState: PwaReduxShape = {
   theme,
   campaigns: campaignsData,
   searchStr: "",
-  fromDate: dayjs("2023-01-31"),
-  toDate: dayjs("2023-06-01"),
+  fromDate: null,
+  toDate: null,
 }
-
-// dayjs('2019-01-25').unix()
 
 export const pwaSlice = createSlice({
   name: "pwa",

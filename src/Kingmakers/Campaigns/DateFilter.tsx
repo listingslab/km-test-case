@@ -24,7 +24,6 @@ export default function DateFilter(props: any) {
     }
     if (id === "f"){
       console.log(fromDate, "fromDate", newDate)
-      
     }
   }
 
