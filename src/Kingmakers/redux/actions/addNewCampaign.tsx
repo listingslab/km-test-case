@@ -1,4 +1,3 @@
-import moment from "moment"
 import { 
   setPwaKey,
   store,
@@ -15,8 +14,8 @@ export const addNewCampaign =
         const nC = {
           id: campaign.id,
           name: campaign.name,
-          startDate: moment(campaign.startDate).format(),
-          endDate: moment(campaign.endDate).format(),
+          startDate: campaign.startDate,
+          endDate: campaign.endDate,
           budget: b,
         }
         const newCampaigns = [nC, ...campaigns ]

@@ -1,5 +1,4 @@
 import React from "react"
-import moment from "moment"
 import {
   CampaignsShape,
 } from "../types"
@@ -157,21 +156,16 @@ export default function Campaigns() {
                   <TableBody>
                     {rows.map((row, i: number) => {
                       let active = true
-                      const startDate: number = moment(row.endDate).valueOf()
-                      const endDate: number = moment(row.endDate).valueOf()
-                      const nowDate: number = Date.now()
-                      if (endDate < nowDate || startDate < nowDate){
-                        active = false
-                      }
+                      
                       return <StyledTableRow key={`campaign_${i}`}>
                                 <StyledTableCell component="th" scope="row">
                                   {row.name}
                                 </StyledTableCell>
                                 <StyledTableCell align="left">
-                                  {row.startDate ? moment(row.startDate).format("DD/MM/YY") : null}
+                                  {row.startDate ? row.startDate : null}
                                 </StyledTableCell>
                                 <StyledTableCell align="left">
-                                  {row.endDate ? moment(row.endDate).format("DD/MM/YY") : null}
+                                  {row.endDate ? row.endDate : null}
                                 </StyledTableCell>
                                 <StyledTableCell align="left">
                                   <Icon icon={active ? "tick" : "close" } 
