@@ -9,12 +9,17 @@ import {
   updateSearchStr,
 } from ".."
 
-export default function DateFilter() {
+export default function DateFilter(props: any) {
+
+  const {id} = props
   const dispatch = usePwaDispatch()
 
   return (
-    <Box sx={{border: "1px solid red"}}>
-      DateFilter
+    <Box id={id} 
+      sx={{
+        m:1,
+        border: "1px solid red"}}>
+      {id}
     </Box>
   )
 }

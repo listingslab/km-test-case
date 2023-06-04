@@ -125,9 +125,10 @@ export default function Campaigns() {
 
                 <CardContent>
                   <Box sx={{display: "flex"}}>
-                    <DateFilter />
+                    <DateFilter id="fromDate"/>
+                    <DateFilter id="toDate"/>
                     <Box sx={{flexGrow:1}}/>
-
+                    
                     <Box sx={{ '& > :not(style)': { m: 1 } }}>
                       <FormControl variant="standard">
                         <Input
