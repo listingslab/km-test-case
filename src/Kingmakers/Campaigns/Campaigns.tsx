@@ -115,9 +115,6 @@ export default function Campaigns() {
 
                 <CardContent>
                   <Box sx={{display: "flex"}}>
-                    <DateFilter id="f"/>
-                    <DateFilter id="t"/>
-                    <Box sx={{flexGrow:1}}/>
                     
                     <Box sx={{ '& > :not(style)': { m: 1 } }}>
                       <FormControl variant="standard">
@@ -138,21 +135,20 @@ export default function Campaigns() {
                                   onClick={() => dispatch(updateSearchStr(""))}
                                   onMouseDown={() => dispatch(updateSearchStr(""))}
                                   edge="end">
-                                  <Icon icon="refresh" />
+                                  <Icon icon="close" />
                                 </IconButton>
                             </InputAdornment>
                           }
                         />
                       </FormControl>
                     </Box>
-                    
-
-                    
-                    
+                    <Box sx={{flexGrow:1}}/>
+                    <DateFilter id="f"/>
+                    <DateFilter id="t"/>
                   </Box>
                 </CardContent>
                 
-                {!hasCampaigns ? <NoCampaigns /> : null}
+                {!hasCampaigns ? <NoCampaigns /> : 
                 
               
               <TableContainer component={"div"}>
@@ -190,6 +186,9 @@ export default function Campaigns() {
                   </TableBody>
                 </Table>
               </TableContainer>
+              }
+
+
             </Card>
           </>)
 }

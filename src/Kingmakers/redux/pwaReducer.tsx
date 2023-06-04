@@ -13,9 +13,9 @@ const initialState: PwaReduxShape = {
   notifyer: null,
   theme,
   campaigns: campaignsData,
-  searchStr: "2021-11-01T22:24:21.086Z",
-  fromDate: "2021-11-01T22:24:21.086Z",
-  toDate: "2023-04-23T19:30:50.446Z",
+  searchStr: "",
+  fromDate: "1970-01-01T01:00:00.0000Z",
+  toDate: "1970-01-01T01:00:00.0000Z",
 }
 
 export const pwaSlice = createSlice({

@@ -1,10 +1,13 @@
 import * as React from 'react'
+import dayjs from 'dayjs'
 import { 
   Box,
+  IconButton,
 } from "@mui/material"
 import {
   usePwaSelect,
   selectPWA,
+  Icon,
 } from ".."
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -18,61 +21,34 @@ export default function DateFilter(props: any) {
   const onDateUpdated = (id: string, newDate: string) => {
     if (id === "t"){
       console.log(toDate,"toDate", newDate)
-      // console.log("toDate", toDate)
     }
     if (id === "f"){
       console.log(fromDate, "fromDate", newDate)
+      
     }
   }
 
   return (
-    <Box id={id} 
+    <Box id={`date-filter-${id}`} 
       sx={{
-        m:1,
+        display: "flex",
+        mr: 1,
       }}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker 
-            label={id === "f" ? `Start Date` : `End Date` } 
+            value={id === "f" ? dayjs(fromDate) : dayjs(toDate)  } 
+            label={id === "f" ? `From` : `To` } 
             onChange={(newValue: any) => {
               onDateUpdated(id, newValue)
             }}
-            
           />
         </LocalizationProvider>
+        <Box sx={{m:1}}>
+          <IconButton>
+            <Icon icon="close" />
+          </IconButton>
+        </Box>
         
     </Box>
   )
 }
-
-
-
-/* 
-
-
-
-
-<Font>
-          {id === "f" ? `from ${fromDate}` : `to ${toDate}`}
-        </Font>
-        
-        
-        <Box>
-                      <DatePicker 
-                        label="From"
-                        format="DD/MM/YYYY"
-                        value={fromTime ? dayjs(fromTime) : null}
-                        onChange={(v:any) => {
-                          dispatch(updateFromTime(moment(v).valueOf()))
-                        }}
-                      />
-                    </Box>
-                    <Box sx={{ml:1}}>
-                        <DatePicker
-                          label="To"
-                          format="DD/MM/YYYY"
-                          value={toTime ? dayjs(toTime) : null}
-                          onChange={(v:any) => {
-                            dispatch(updateToTime(moment(v).valueOf()))
-                          }}
-                        />
-                    </Box> */

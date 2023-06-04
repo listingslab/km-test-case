@@ -33,8 +33,8 @@ import { startApp } from "./redux/actions/startApp"
 import { setCurrency } from "./redux/actions/setCurrency"
 import { onUpdate } from "./redux/actions/onUpdate"
 import { updateSearchStr } from "./redux/actions/updateSearchStr"
-import { updateFromTime } from "./redux/actions/updateFromTime"
-import { updateToTime } from "./redux/actions/updateToTime"
+import { updateFromDate } from "./redux/actions/updateFromDate"
+import { updateToDate } from "./redux/actions/updateToDate"
 import { addNewCampaign } from "./redux/actions/addNewCampaign"
 
 export {
@@ -63,8 +63,8 @@ export {
   setCurrency,
   onUpdate,
   updateSearchStr,
-  updateFromTime,
-  updateToTime,
+  updateFromDate,
+  updateToDate,
   addNewCampaign,
   NoCampaigns,
   DateFilter,
