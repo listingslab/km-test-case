@@ -1,3 +1,4 @@
+import dayjs from "dayjs"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { RootState } from "./store"
 import {
@@ -14,9 +15,11 @@ const initialState: PwaReduxShape = {
   theme,
   campaigns: campaignsData,
   searchStr: "",
-  fromDate: "1970-01-01T01:00:00.0000Z",
-  toDate: "1970-01-01T01:00:00.0000Z",
+  fromDate: dayjs("2023-01-31"),
+  toDate: dayjs("2023-06-01"),
 }
+
+// dayjs('2019-01-25').unix()
 
 export const pwaSlice = createSlice({
   name: "pwa",

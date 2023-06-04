@@ -2,12 +2,12 @@ import * as React from 'react'
 import dayjs from 'dayjs'
 import { 
   Box,
-  IconButton,
+  // IconButton,
 } from "@mui/material"
 import {
   usePwaSelect,
   selectPWA,
-  Icon,
+  // Icon,
 } from ".."
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -37,17 +37,18 @@ export default function DateFilter(props: any) {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DatePicker 
             value={id === "f" ? dayjs(fromDate) : dayjs(toDate)  } 
-            label={id === "f" ? `From` : `To` } 
+            label={id === "f" ? `From` : `To` }
+            format="DD/MM/YYYY" 
             onChange={(newValue: any) => {
               onDateUpdated(id, newValue)
             }}
           />
         </LocalizationProvider>
-        <Box sx={{m:1}}>
+        {/* <Box sx={{m:1}}>
           <IconButton>
             <Icon icon="close" />
           </IconButton>
-        </Box>
+        </Box> */}
         
     </Box>
   )

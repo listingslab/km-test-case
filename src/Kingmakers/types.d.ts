@@ -21,8 +21,8 @@ export type PwaReduxShape = {
   persisted?: boolean
   theme: ThemeShape
   searchStr: string
-  fromDate: string|null
-  toDate: string|null
+  fromDate: any
+  toDate: any
   campaigns: CampaignsShape
 }
 
