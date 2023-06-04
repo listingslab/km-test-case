@@ -18,7 +18,7 @@ export default function Kingmakers() {
             <WrapRedux>
               <MuiTheme>
                 <Notifyer />
-                <Container maxWidth="md">
+                <Container maxWidth="lg">
                   <AppShell />
                 </Container>
               </MuiTheme>

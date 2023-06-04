@@ -461,7 +461,10 @@ export default function Icon(props: any) {
     case "print":
       iconFragment = <PrintIcon color={color} />
       break
-    case "calendar":
+      case "date":
+      iconFragment = <CalendarIcon color={color} />
+      break
+      case "calendar":
       iconFragment = <CalendarIcon color={color} />
       break
     case "markdown":

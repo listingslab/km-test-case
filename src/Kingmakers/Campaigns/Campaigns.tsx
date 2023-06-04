@@ -1,25 +1,19 @@
 import React from "react"
-import moment from "moment"
+import dayjs from "dayjs"
+import isBetween from "dayjs/plugin/isBetween"
 import {
   CampaignsShape,
 } from "../types"
-// import dayjs, { Dayjs } from 'dayjs'
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import {
   styled,
-  Alert,
   IconButton,
   Avatar,
   Card,
   CardHeader,
-  CardContent,
   TableCell,
   TableRow,
   TableContainer,
   Table,
-  TableHead,
   TableBody,
   FormControl,
   Box,
@@ -28,15 +22,17 @@ import {
 } from "@mui/material"
 import { tableCellClasses } from '@mui/material/TableCell'
 import {
+  Calendar,
+  SelectDate,
+  DeselectDate, 
+  NoCampaigns,
   usePwaSelect,
   usePwaDispatch,
   updateSearchStr,
   selectPWA,
   Font,
   Icon,
-  // updateFromTime,
-  // updateToTime,
-  // setPwaKey,
+  TableInfo,
 } from ".."
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -61,7 +57,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function Campaigns() {
   const pwa = usePwaSelect(selectPWA)
   const dispatch = usePwaDispatch()
-  const {campaigns, searchStr, toTime, fromTime} = pwa
+  const {campaigns, searchStr, fromDate, toDate} = pwa
   function createData(
     id: number,
     name: string,
@@ -81,23 +77,21 @@ export default function Campaigns() {
           filteredCampaigns.push(campaigns[i])
         }
       }
-      if (inc) filteredCampaigns.push(campaigns[i])
+      let excludeByDate = false
+      if (fromDate){
+        if (dayjs(fromDate).isAfter(dayjs(campaigns[i].startDate))) excludeByDate = true
+      }
+      if (toDate){
+        if (dayjs(toDate).isAfter(dayjs(campaigns[i].endDate))) excludeByDate = true
+      }
+      
+      if (inc && !excludeByDate) filteredCampaigns.push(campaigns[i])
   }
+
   for (let j=0; j<filteredCampaigns.length; j++){
     let visible = true
-    const {
-      id,
-      name,
-      startDate,
-      endDate,
-      budget,
+    const { id, name, startDate, endDate, budget,
     } = filteredCampaigns[j]
-    if (toTime){
-      if (moment(endDate).valueOf() < toTime ) visible = false
-    }
-    if (fromTime){
-      if (moment(startDate).valueOf() < fromTime ) visible = false
-    }
     if (visible){
       rows.push(createData(
         id,
@@ -108,151 +102,87 @@ export default function Campaigns() {
       ))
     }
   }
+  const hasCampaigns = rows.length
 
   return (<>
             <Card sx={{my:1}}>
+
               <CardHeader
                 title={<Font variant="title">Campaigns</Font>}
                 subheader={<Font>PWA that displays a filterable list of Campaigns</Font>}
-                avatar={<Avatar src="/png/logo192.png" alt={"KM Test Case"}/>}
-                action={<>
-                  <IconButton
-                    size="small"
-                    color="primary"
-                    onClick={(e: React.MouseEvent) => {
-                      e.preventDefault()
-                      window.open("https://github.com/listingslab/km-test-case", "_blank")
-                    }}
-                  >
-                    <Icon icon="github" />
-                  </IconButton>
-                </>}
-              />
+                avatar={<IconButton
+                  size="small"
+                  color="primary"
+                  onClick={(e: React.MouseEvent) => {
+                    e.preventDefault()
+                    window.open("https://github.com/listingslab/km-test-case", "_blank")
+                  }}>
+                  <Avatar src="/png/logo192.png" alt={"KM Test Case"}/>
+                </IconButton>
+                } />
+              
+                <Calendar />
 
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <CardContent>
-                  <Box sx={{display: "flex"}}>
-                    <Box sx={{ '& > :not(style)': { m: 1 } }}>
-                      <FormControl variant="standard">
-                        <Input
-                          value={searchStr}
-                          placeholder="Filter by name"
-                          onChange={(t: any) => {
-                            dispatch(updateSearchStr(t.target.value))
-                          }}
-                          startAdornment={
-                            <InputAdornment position="start">
-                              <Icon icon="filter" />
-                            </InputAdornment>
-                          }
-                          endAdornment={
-                            <InputAdornment position="end">
-                                <IconButton
-                                  onClick={() => dispatch(updateSearchStr(""))}
-                                  onMouseDown={() => dispatch(updateSearchStr(""))}
-                                  edge="end">
-                                  <Icon icon="refresh" />
-                                </IconButton>
-                            </InputAdornment>
-                          }
-                        />
-                      </FormControl>
-                    </Box>
-                    <Box sx={{flexGrow:1}}/>
-                    {/* <Box>
-                      <DatePicker 
-                        label="From"
-                        format="DD/MM/YYYY"
-                        value={fromTime ? dayjs(fromTime) : null}
-                        onChange={(v:any) => {
-                          dispatch(updateFromTime(moment(v).valueOf()))
+                <Box sx={{display: "flex"}}>
+                  <Box sx={{ '& > :not(style)': { m: 2 } }}>
+                    <FormControl variant="standard">
+                      <Input
+                        value={searchStr}
+                        placeholder="Name"
+                        onChange={(t: any) => {
+                          dispatch(updateSearchStr(t.target.value))
                         }}
+                        startAdornment={<>
+                          <InputAdornment position="start" sx={{mr:2}}>
+                              <IconButton
+                                disabled={searchStr === "" ? true : false}
+                                onClick={() => dispatch(updateSearchStr(""))}
+                                onMouseDown={() => dispatch(updateSearchStr(""))}
+                                edge="end">
+                                <Icon icon={searchStr !== "" ? "close" : "filter"} />
+                              </IconButton>
+                          </InputAdornment>
+                        </>
+                        }
                       />
-                    </Box>
-                    <Box sx={{ml:1}}>
-                        <DatePicker
-                          label="To"
-                          format="DD/MM/YYYY"
-                          value={toTime ? dayjs(toTime) : null}
-                          onChange={(v:any) => {
-                            dispatch(updateToTime(moment(v).valueOf()))
-                          }}
-                        />
-                    </Box> */}
+                    </FormControl>
                   </Box>
-                </CardContent>
-              </LocalizationProvider>
 
-              {!rows.length ? 
-                  <Alert 
-                    sx={{m:2}}
-                    icon={false}
-                    variant="standard" 
-                    severity="success"
-                    action={<IconButton
-                      size="small"
-                      color="primary"
-                      onClick={(e: React.MouseEvent) => {
-                        e.preventDefault()
-                        dispatch(updateSearchStr(""))
-                      }}
-                    >
-                      <Icon icon="refresh" />
-                    </IconButton>}
-                    onClose={() => {
-                      dispatch(updateSearchStr(""))
-                    }}>
-                      <Font variant="title">No campaigns found</Font>
-                  </Alert> : <TableContainer component={"div"}>
+                  <Box sx={{m:1.5}}>
+                    <SelectDate mode="from"/>
+                    <DeselectDate mode="from"/>
+                  </Box>
+                  <Box sx={{m:1.5}}>
+                    <SelectDate mode="to"/>
+                    <DeselectDate mode="to"/>
+                  </Box>
 
-                <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                  <TableHead>
-                    <TableRow>
-                      <StyledTableCell>
-                        <Font variant="title">
-                          Campaign
-                        </Font>
-                      </StyledTableCell>
-                      <StyledTableCell align="left">
-                        <Font variant="title">From</Font>
-                      </StyledTableCell>
-                      <StyledTableCell align="left">
-                        <Font variant="title">To</Font>
-                      </StyledTableCell>
-                      <StyledTableCell align="left">
-                        <Font variant="title" align="left">Status</Font>
-                      </StyledTableCell>
-                      <StyledTableCell align="right">
-                        <Font variant="title" align="right">Budget</Font>
-                      </StyledTableCell>
-                    </TableRow>
-                  </TableHead>
+              </Box>
+                
+              {!hasCampaigns ? <NoCampaigns /> : 
+                
+              <TableContainer component={"div"}>
+                <Table sx={{ minWidth: 500 }} aria-label="customized table">
+                  <TableInfo />
                   <TableBody>
-
                     {rows.map((row, i: number) => {
-                      
-                      let active = true
-                      const startDate: number = moment(row.endDate).valueOf()
-                      const endDate: number = moment(row.endDate).valueOf()
-                      const nowDate: number = Date.now()
-                      if (endDate < nowDate || startDate < nowDate){
-                        active = false
-                      }
-
+                      const {startDate, endDate} = row
+                      const op: boolean = false
+                      if (op) console.log(isBetween)
+                      const active = dayjs().isBetween(startDate, dayjs(endDate))
                       return <StyledTableRow key={`campaign_${i}`}>
                                 <StyledTableCell component="th" scope="row">
                                   {row.name}
                                 </StyledTableCell>
                                 <StyledTableCell align="left">
-                                  {row.startDate ? moment(row.startDate).format("DD/MM/YY") : null}
+                                  {row.startDate ? dayjs(row.startDate).format("DD/MM/YY") : null}
                                 </StyledTableCell>
                                 <StyledTableCell align="left">
-                                  {row.endDate ? moment(row.endDate).format("DD/MM/YY") : null}
+                                  {row.endDate ? dayjs(row.endDate).format("DD/MM/YY") : null}
                                 </StyledTableCell>
                                 <StyledTableCell align="left">
                                   <Icon icon={active ? "tick" : "close" } 
-                                        color={active ? "success" : "warning" }
-                                  />
+                                        color={active ? "success" : "warning" } />
                                 </StyledTableCell>
                                 <StyledTableCell align="right">
                                   {row.budget ? <>${Math.floor(row.budget/1000)}K</> : null }
@@ -261,7 +191,8 @@ export default function Campaigns() {
                             })}
                   </TableBody>
                 </Table>
-              </TableContainer> }
+              </TableContainer>
+              }
             </Card>
           </>)
 }
