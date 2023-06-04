@@ -15,16 +15,15 @@ export type CampaignsShape =Array<CampaignShape>
 
 export type PwaReduxShape = {
   started: boolean
+  notifyer: NotifyShape|null
   data?: any
   lastUpdated?: any
   persisted?: boolean
   theme: ThemeShape
   searchStr: string
-  searching: boolean
-  toTime: number|null
-  fromTime: number|null
+  fromDate: string|null
+  toDate: string|null
   campaigns: CampaignsShape
-  notifyer: NotifyShape|null
 }
 
 export type NotifyShape = {

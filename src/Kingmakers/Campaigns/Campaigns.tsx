@@ -55,7 +55,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 export default function Campaigns() {
   const pwa = usePwaSelect(selectPWA)
   const dispatch = usePwaDispatch()
-  const {campaigns, searchStr, toTime, fromTime} = pwa
+  const {campaigns, searchStr} = pwa
   function createData(
     id: number,
     name: string,
@@ -79,19 +79,8 @@ export default function Campaigns() {
   }
   for (let j=0; j<filteredCampaigns.length; j++){
     let visible = true
-    const {
-      id,
-      name,
-      startDate,
-      endDate,
-      budget,
+    const { id, name, startDate, endDate, budget,
     } = filteredCampaigns[j]
-    if (toTime){
-      if (moment(endDate).valueOf() < toTime ) visible = false
-    }
-    if (fromTime){
-      if (moment(startDate).valueOf() < fromTime ) visible = false
-    }
     if (visible){
       rows.push(createData(
         id,
@@ -103,6 +92,7 @@ export default function Campaigns() {
     }
   }
   const hasCampaigns = rows.length
+
   return (<>
             <Card sx={{my:1}}>
               <CardHeader
@@ -125,8 +115,8 @@ export default function Campaigns() {
 
                 <CardContent>
                   <Box sx={{display: "flex"}}>
-                    <DateFilter id="fromDate"/>
-                    <DateFilter id="toDate"/>
+                    <DateFilter id="f"/>
+                    <DateFilter id="t"/>
                     <Box sx={{flexGrow:1}}/>
                     
                     <Box sx={{ '& > :not(style)': { m: 1 } }}>

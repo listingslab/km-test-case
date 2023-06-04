@@ -10,13 +10,12 @@ import {
 import {campaignsData} from "../Campaigns"
 const initialState: PwaReduxShape = {
   started: false,
+  notifyer: null,
   theme,
   campaigns: campaignsData,
-  searchStr: "",
-  searching: false,
-  fromTime: null,
-  toTime: null,
-  notifyer: null,
+  searchStr: "2021-11-01T22:24:21.086Z",
+  fromDate: "2021-11-01T22:24:21.086Z",
+  toDate: "2023-04-23T19:30:50.446Z",
 }
 
 export const pwaSlice = createSlice({
