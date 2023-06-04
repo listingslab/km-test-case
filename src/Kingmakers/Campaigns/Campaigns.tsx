@@ -8,7 +8,6 @@ import {
   Avatar,
   Card,
   CardHeader,
-  CardContent,
   TableCell,
   TableRow,
   TableContainer,
@@ -113,6 +112,7 @@ export default function Campaigns() {
                   </IconButton>
                 </>}
               />
+              
               <Calendar />
 
                 <Box sx={{display: "flex"}}>
@@ -139,11 +139,11 @@ export default function Campaigns() {
                       />
                     </FormControl>
                   </Box>
-                  <DateFilter id="f"/>
-                  <DateFilter id="t"/>
-                </Box>
+                <DateFilter id="f"/>
+                <DateFilter id="t"/>
+              </Box>
                 
-                {!hasCampaigns ? <NoCampaigns /> : 
+              {!hasCampaigns ? <NoCampaigns /> : 
                 
               
               <TableContainer component={"div"}>
@@ -152,7 +152,6 @@ export default function Campaigns() {
                   <TableBody>
                     {rows.map((row, i: number) => {
                       let active = true
-                      
                       return <StyledTableRow key={`campaign_${i}`}>
                                 <StyledTableCell component="th" scope="row">
                                   {row.name}
@@ -177,8 +176,6 @@ export default function Campaigns() {
                 </Table>
               </TableContainer>
               }
-
-
             </Card>
           </>)
 }
