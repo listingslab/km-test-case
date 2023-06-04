@@ -5,6 +5,7 @@ import {
   Campaigns,
   NoCampaigns,
   DateFilter,
+  TableInfo,
 } from "./Campaigns"
 // Components
 import AppShell from "./components/AppShell"
@@ -67,4 +68,5 @@ export {
   addNewCampaign,
   NoCampaigns,
   DateFilter,
+  TableInfo,
 }

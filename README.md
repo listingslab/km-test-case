@@ -1,5 +1,7 @@
 # [Solution README](./src/Kingmakers/README.md)
 
+[Demo](https://kingmakers-test.web.app/)
+
  > !important; when testing the app with the AddCampaigns() method in console, 
  please make sure there is no whitespace in your JSON. eg;
 

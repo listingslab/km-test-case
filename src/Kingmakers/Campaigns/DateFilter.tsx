@@ -1,7 +1,6 @@
 import * as React from 'react'
 import { 
-  Alert,
-  IconButton,
+  Box,
 } from "@mui/material"
 import { 
   Icon,
@@ -14,23 +13,31 @@ export default function DateFilter() {
   const dispatch = usePwaDispatch()
 
   return (
-    <Alert 
-      sx={{m:2}}
-      icon={false}
-      variant="standard" 
-      severity="success"
-      action={<IconButton
-        size="small"
-        color="primary"
-        onClick={(e: React.MouseEvent) => {
-          e.preventDefault()
-          dispatch(updateSearchStr(""))
-        }}
-      >
-        <Icon icon="refresh" />
-      </IconButton>}
-      onClose={() => {}}>
-        <Font variant="warning">No campaigns :(</Font>
-    </Alert>
+    <Box sx={{border: "1px solid red"}}>
+      DateFilter
+    </Box>
   )
 }
+
+
+
+{/* <Box>
+                      <DatePicker 
+                        label="From"
+                        format="DD/MM/YYYY"
+                        value={fromTime ? dayjs(fromTime) : null}
+                        onChange={(v:any) => {
+                          dispatch(updateFromTime(moment(v).valueOf()))
+                        }}
+                      />
+                    </Box>
+                    <Box sx={{ml:1}}>
+                        <DatePicker
+                          label="To"
+                          format="DD/MM/YYYY"
+                          value={toTime ? dayjs(toTime) : null}
+                          onChange={(v:any) => {
+                            dispatch(updateToTime(moment(v).valueOf()))
+                          }}
+                        />
+                    </Box> */}

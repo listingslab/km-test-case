@@ -5,7 +5,6 @@ import {
 } from "../types"
 import {
   styled,
-  Alert,
   IconButton,
   Avatar,
   Card,
@@ -15,7 +14,6 @@ import {
   TableRow,
   TableContainer,
   Table,
-  TableHead,
   TableBody,
   FormControl,
   Box,
@@ -24,6 +22,7 @@ import {
 } from "@mui/material"
 import { tableCellClasses } from '@mui/material/TableCell'
 import {
+  DateFilter,
   NoCampaigns,
   usePwaSelect,
   usePwaDispatch,
@@ -31,9 +30,8 @@ import {
   selectPWA,
   Font,
   Icon,
+  TableInfo,
 } from ".."
-
-
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -127,6 +125,9 @@ export default function Campaigns() {
 
                 <CardContent>
                   <Box sx={{display: "flex"}}>
+                    <DateFilter />
+                    <Box sx={{flexGrow:1}}/>
+
                     <Box sx={{ '& > :not(style)': { m: 1 } }}>
                       <FormControl variant="standard">
                         <Input
@@ -153,27 +154,10 @@ export default function Campaigns() {
                         />
                       </FormControl>
                     </Box>
-                    <Box sx={{flexGrow:1}}/>
-                    {/* <Box>
-                      <DatePicker 
-                        label="From"
-                        format="DD/MM/YYYY"
-                        value={fromTime ? dayjs(fromTime) : null}
-                        onChange={(v:any) => {
-                          dispatch(updateFromTime(moment(v).valueOf()))
-                        }}
-                      />
-                    </Box>
-                    <Box sx={{ml:1}}>
-                        <DatePicker
-                          label="To"
-                          format="DD/MM/YYYY"
-                          value={toTime ? dayjs(toTime) : null}
-                          onChange={(v:any) => {
-                            dispatch(updateToTime(moment(v).valueOf()))
-                          }}
-                        />
-                    </Box> */}
+                    
+
+                    
+                    
                   </Box>
                 </CardContent>
                 
@@ -181,35 +165,10 @@ export default function Campaigns() {
                 
               
               <TableContainer component={"div"}>
-
-                <Table sx={{ minWidth: 700 }} aria-label="customized table">
-                  
-                  <TableHead>
-                    <TableRow>
-                      <StyledTableCell>
-                        <Font variant="title">
-                          Campaign
-                        </Font>
-                      </StyledTableCell>
-                      <StyledTableCell align="left">
-                        <Font variant="title">From</Font>
-                      </StyledTableCell>
-                      <StyledTableCell align="left">
-                        <Font variant="title">To</Font>
-                      </StyledTableCell>
-                      <StyledTableCell align="left">
-                        <Font variant="title" align="left">Status</Font>
-                      </StyledTableCell>
-                      <StyledTableCell align="right">
-                        <Font variant="title" align="right">Budget</Font>
-                      </StyledTableCell>
-                    </TableRow>
-                  </TableHead>
-
+                <Table sx={{ minWidth: 500 }} aria-label="customized table">
+                  <TableInfo />
                   <TableBody>
-
                     {rows.map((row, i: number) => {
-                      
                       let active = true
                       const startDate: number = moment(row.endDate).valueOf()
                       const endDate: number = moment(row.endDate).valueOf()
@@ -217,7 +176,6 @@ export default function Campaigns() {
                       if (endDate < nowDate || startDate < nowDate){
                         active = false
                       }
-
                       return <StyledTableRow key={`campaign_${i}`}>
                                 <StyledTableCell component="th" scope="row">
                                   {row.name}
