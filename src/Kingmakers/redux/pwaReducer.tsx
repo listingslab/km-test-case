@@ -1,4 +1,3 @@
-import dayjs from "dayjs"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { RootState } from "./store"
 import {
@@ -14,9 +13,11 @@ const initialState: PwaReduxShape = {
   notifyer: null,
   theme,
   campaigns: campaignsData,
-  searchStr: "",
+  calendarMode: null,
+  calendarOpen: false,
   fromDate: null,
   toDate: null,
+  searchStr: "",
 }
 
 export const pwaSlice = createSlice({

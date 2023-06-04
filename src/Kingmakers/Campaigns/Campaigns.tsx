@@ -21,6 +21,7 @@ import {
 } from "@mui/material"
 import { tableCellClasses } from '@mui/material/TableCell'
 import {
+  Calendar,
   DateFilter,
   NoCampaigns,
   usePwaSelect,
@@ -94,6 +95,7 @@ export default function Campaigns() {
 
   return (<>
             <Card sx={{my:1}}>
+
               <CardHeader
                 title={<Font variant="title">Campaigns</Font>}
                 subheader={<Font>PWA that displays a filterable list of Campaigns</Font>}
@@ -111,41 +113,35 @@ export default function Campaigns() {
                   </IconButton>
                 </>}
               />
+              <Calendar />
 
-                <CardContent>
-                  <Box sx={{display: "flex"}}>
-                    
-                    <Box sx={{ '& > :not(style)': { m: 1 } }}>
-                      <FormControl variant="standard">
-                        <Input
-                          value={searchStr}
-                          placeholder="Filter by name"
-                          onChange={(t: any) => {
-                            dispatch(updateSearchStr(t.target.value))
-                          }}
-                          startAdornment={
-                            <InputAdornment position="start">
-                              <Icon icon="filter" />
-                            </InputAdornment>
-                          }
-                          endAdornment={
-                            <InputAdornment position="end">
-                                <IconButton
-                                  onClick={() => dispatch(updateSearchStr(""))}
-                                  onMouseDown={() => dispatch(updateSearchStr(""))}
-                                  edge="end">
-                                  <Icon icon="close" />
-                                </IconButton>
-                            </InputAdornment>
-                          }
-                        />
-                      </FormControl>
-                    </Box>
-                    <Box sx={{flexGrow:1}}/>
-                    <DateFilter id="f"/>
-                    <DateFilter id="t"/>
+                <Box sx={{display: "flex"}}>
+                  <Box sx={{ '& > :not(style)': { m: 2 } }}>
+                    <FormControl variant="standard">
+                      <Input
+                        value={searchStr}
+                        placeholder="Name"
+                        onChange={(t: any) => {
+                          dispatch(updateSearchStr(t.target.value))
+                        }}
+                        startAdornment={<>
+                          <InputAdornment position="start" sx={{mr:2}}>
+                              <IconButton
+                                disabled={searchStr === "" ? true : false}
+                                onClick={() => dispatch(updateSearchStr(""))}
+                                onMouseDown={() => dispatch(updateSearchStr(""))}
+                                edge="end">
+                                <Icon icon={searchStr !== "" ? "close" : "filter"} />
+                              </IconButton>
+                          </InputAdornment>
+                        </>
+                        }
+                      />
+                    </FormControl>
                   </Box>
-                </CardContent>
+                  <DateFilter id="f"/>
+                  <DateFilter id="t"/>
+                </Box>
                 
                 {!hasCampaigns ? <NoCampaigns /> : 
                 

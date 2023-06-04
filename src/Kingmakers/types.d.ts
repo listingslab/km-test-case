@@ -21,6 +21,8 @@ export type PwaReduxShape = {
   persisted?: boolean
   theme: ThemeShape
   searchStr: string
+  calendarOpen: boolean,
+  calendarMode: string|null,
   fromDate: any
   toDate: any
   campaigns: CampaignsShape

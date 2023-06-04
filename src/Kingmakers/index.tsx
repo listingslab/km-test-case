@@ -6,6 +6,7 @@ import {
   NoCampaigns,
   DateFilter,
   TableInfo,
+  Calendar,
 } from "./Campaigns"
 // Components
 import AppShell from "./components/AppShell"
@@ -36,6 +37,8 @@ import { updateSearchStr } from "./redux/actions/updateSearchStr"
 import { updateFromDate } from "./redux/actions/updateFromDate"
 import { updateToDate } from "./redux/actions/updateToDate"
 import { addNewCampaign } from "./redux/actions/addNewCampaign"
+import { toggleCalendar } from "./redux/actions/toggleCalendar"
+import { updateCalendarMode } from "./redux/actions/updateCalendarMode"
 
 export {
   Kingmakers,
@@ -69,4 +72,7 @@ export {
   NoCampaigns,
   DateFilter,
   TableInfo,
+  Calendar,
+  toggleCalendar,
+  updateCalendarMode,
 }
