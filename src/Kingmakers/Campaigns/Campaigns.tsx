@@ -90,6 +90,7 @@ export default function Campaigns() {
         filteredCampaigns.push(campaigns[i])
       }
   }
+
   for (let j=0; j<filteredCampaigns.length; j++){
     let visible = true
     const { id, name, startDate, endDate, budget,
