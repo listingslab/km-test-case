@@ -78,21 +78,16 @@ export default function Campaigns() {
         }
       }
       let excludeByDate = false
-      if (fromDate && toDate){
-        const between = dayjs(campaigns[i].startDate).isBetween((dayjs(fromDate)), dayjs(toDate))
-        if (!between) excludeByDate = true
+      if (fromDate){
+        if (!dayjs(campaigns[i].startDate).isBefore((dayjs(fromDate)))) excludeByDate = true
       }
-      // if (fromDate && !toDate){
-      //   const before = dayjs(campaigns[i].startDate).isBefore((dayjs(fromDate)))
-      //   if (!before) excludeByDate = true
-      // }
-      // if (!fromDate && toDate){
-      //   const after = dayjs(campaigns[i].startDate).isAfter((dayjs(fromDate)))
-      //   if (!after) excludeByDate = true
-      // }
-      if (inc && !excludeByDate) filteredCampaigns.push(campaigns[i])
+      if (toDate){
+        if (!dayjs(campaigns[i].endDate).isBefore((dayjs(toDate)))) excludeByDate = true
+      }
+      if (inc && !excludeByDate){
+        filteredCampaigns.push(campaigns[i])
+      }
   }
-
   for (let j=0; j<filteredCampaigns.length; j++){
     let visible = true
     const { id, name, startDate, endDate, budget,
