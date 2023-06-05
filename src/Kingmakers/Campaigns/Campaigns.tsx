@@ -82,14 +82,14 @@ export default function Campaigns() {
         const between = dayjs(campaigns[i].startDate).isBetween((dayjs(fromDate)), dayjs(toDate))
         if (!between) excludeByDate = true
       }
-      if (fromDate && !toDate){
-        const before = dayjs(campaigns[i].startDate).isBefore((dayjs(fromDate)))
-        if (!before) excludeByDate = true
-      }
-      if (!fromDate && toDate){
-        const after = dayjs(campaigns[i].startDate).isAfter((dayjs(fromDate)))
-        if (!after) excludeByDate = true
-      }
+      // if (fromDate && !toDate){
+      //   const before = dayjs(campaigns[i].startDate).isBefore((dayjs(fromDate)))
+      //   if (!before) excludeByDate = true
+      // }
+      // if (!fromDate && toDate){
+      //   const after = dayjs(campaigns[i].startDate).isAfter((dayjs(fromDate)))
+      //   if (!after) excludeByDate = true
+      // }
       if (inc && !excludeByDate) filteredCampaigns.push(campaigns[i])
   }
 
