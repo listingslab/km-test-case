@@ -51,7 +51,7 @@ export default function Calendar() {
   } 
   if (calendarMode === "from") {
     if (fromDate) dateValue = dayjs(fromDate)
-    if (!fromDate)  dateValue = dayjs().subtract(6, "month")
+    if (!fromDate)  dateValue = dayjs().subtract(5, "month")
   } 
 
   return (
