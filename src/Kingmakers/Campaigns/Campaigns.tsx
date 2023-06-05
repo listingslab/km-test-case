@@ -77,28 +77,19 @@ export default function Campaigns() {
           filteredCampaigns.push(campaigns[i])
         }
       }
-      // Date filter
       let excludeByDate = false
       if (fromDate && toDate){
-        // console.log(campaigns[i].name, "both")
+        const between = dayjs(campaigns[i].startDate).isBetween((dayjs(fromDate)), dayjs(toDate))
+        if (!between) excludeByDate = true
       }
       if (fromDate && !toDate){
-        // console.log(campaigns[i].name, "to")
-
+        const before = dayjs(campaigns[i].startDate).isBefore((dayjs(fromDate)))
+        if (!before) excludeByDate = true
       }
       if (!fromDate && toDate){
-        // console.log(campaigns[i].name, "from")
-
+        const after = dayjs(campaigns[i].startDate).isAfter((dayjs(fromDate)))
+        if (!after) excludeByDate = true
       }
-
-
-      // if (fromDate){
-      //   if (dayjs(fromDate).isAfter(dayjs(campaigns[i].startDate))) excludeByDate = true
-      // }
-      // if (toDate){
-      //   if (dayjs(toDate).isAfter(dayjs(campaigns[i].endDate))) excludeByDate = true
-      // }
-      
       if (inc && !excludeByDate) filteredCampaigns.push(campaigns[i])
   }
 
@@ -169,46 +160,43 @@ export default function Campaigns() {
                       />
                     </FormControl>
                   </Box>
-
-                  
-
               </Box>
 
               <Card sx={{m:2}}>
                 
-              {!hasCampaigns ? <NoCampaigns /> : 
+                {!hasCampaigns ? <NoCampaigns /> : 
                 
-              <TableContainer component={"div"}>
-                <Table sx={{ minWidth: 500 }} aria-label="customized table">
-                  <TableInfo />
-                  <TableBody>
-                    {rows.map((row, i: number) => {
-                      const {startDate, endDate} = row
-                      const op: boolean = false
-                      if (op) console.log(isBetween)
-                      const active = dayjs().isBetween(startDate, dayjs(endDate))
-                      return <StyledTableRow key={`campaign_${i}`}>
-                                <StyledTableCell component="th" scope="row">
-                                  <Font>{row.name}</Font>
-                                </StyledTableCell>
-                                <StyledTableCell align="left">
-                                  <Font>{row.startDate ? dayjs(row.startDate).format("DD/MM/YY") : null}</Font>
-                                </StyledTableCell>
-                                <StyledTableCell align="left">
-                                  <Font>{row.endDate ? dayjs(row.endDate).format("DD/MM/YY") : null}</Font>
-                                </StyledTableCell>
-                                <StyledTableCell align="left">
-                                  <Icon icon={active ? "tick" : "close" } 
-                                        color={active ? "success" : "warning" } />
-                                </StyledTableCell>
-                                <StyledTableCell align="right">
-                                  <Font align="right">{row.budget ? <>${Math.floor(row.budget/1000)}K</> : null }</Font>
-                                </StyledTableCell>
-                              </StyledTableRow>
-                            })}
-                  </TableBody>
-                </Table>
-              </TableContainer>
+                <TableContainer component={"div"}>
+                  <Table sx={{ minWidth: 500 }} aria-label="customized table">
+                    <TableInfo />
+                    <TableBody>
+                      {rows.map((row, i: number) => {
+                        const {startDate, endDate} = row
+                        const op: boolean = false
+                        if (op) console.log(isBetween)
+                        const active = dayjs().isBetween(startDate, dayjs(endDate))
+                        return <StyledTableRow key={`campaign_${i}`}>
+                                  <StyledTableCell component="th" scope="row">
+                                    <Font>{row.name}</Font>
+                                  </StyledTableCell>
+                                  <StyledTableCell align="left">
+                                    <Font>{row.startDate ? dayjs(row.startDate).format("DD/MM/YY") : null}</Font>
+                                  </StyledTableCell>
+                                  <StyledTableCell align="left">
+                                    <Font>{row.endDate ? dayjs(row.endDate).format("DD/MM/YY") : null}</Font>
+                                  </StyledTableCell>
+                                  <StyledTableCell align="left">
+                                    <Icon icon={active ? "tick" : "close" } 
+                                          color={active ? "success" : "warning" } />
+                                  </StyledTableCell>
+                                  <StyledTableCell align="right">
+                                    <Font align="right">{row.budget ? <>${Math.floor(row.budget/1000)}K</> : null }</Font>
+                                  </StyledTableCell>
+                                </StyledTableRow>
+                              })}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
               }
             </Card>
           </>)
