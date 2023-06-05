@@ -8,6 +8,8 @@ import {
   Font,
   usePwaDispatch,
   updateSearchStr,
+  updateFromDate,
+  updateToDate,
 } from ".."
 
 export default function NoCampaigns() {
@@ -25,6 +27,8 @@ export default function NoCampaigns() {
         onClick={(e: React.MouseEvent) => {
           e.preventDefault()
           dispatch(updateSearchStr(""))
+          dispatch(updateToDate(null))
+          dispatch(updateFromDate(null))
         }}
       >
         <Icon icon="refresh" />

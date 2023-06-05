@@ -20,7 +20,7 @@ export default function SelectDate(props: any) {
 
   return <>
     <Button
-      sx={{textTransform: "none", m:1.5}}
+      sx={{m:1}}
       onClick={(e: React.MouseEvent) => {
         e.preventDefault()
         dispatch(toggleCalendar(true))
@@ -28,9 +28,9 @@ export default function SelectDate(props: any) {
       }}>
       <Font variant="title">
         {mode === "to" ? <>
-          {toDate ? `To ${dayjs(toDate).format("DD/MM/YY")}` : "To" }
+          {toDate ? `To ${dayjs(toDate).format("DD/MM/YY")}` : "To..." }
         </> : <>
-          {fromDate ? `From ${dayjs(fromDate).format("DD/MM/YY")}` : "From" }
+          {fromDate ? `From ${dayjs(fromDate).format("DD/MM/YY")}` : "From..." }
         </> }
       </Font>
     </Button>

@@ -45,6 +45,15 @@ export default function Calendar() {
     dispatch(updateCalendarMode(null))
   }
 
+  let dateValue: any = dayjs()
+  if (calendarMode === "to") {
+    if (toDate) dateValue = dayjs(toDate)
+  } 
+  if (calendarMode === "from") {
+    if (fromDate) dateValue = dayjs(fromDate)
+    if (!fromDate)  dateValue = dayjs().subtract(5, "month")
+  } 
+
   return (
     <Dialog open={calendarOpen}>
       <DialogTitle>
@@ -54,6 +63,7 @@ export default function Calendar() {
       </DialogTitle>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <StaticDatePicker 
+          value={dateValue}
           onChange={(newDate: any) => {
             onDateUpdated(newDate)
           }}
