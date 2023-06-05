@@ -79,10 +79,12 @@ export default function Campaigns() {
       }
       let excludeByDate = false
       if (fromDate){
-        if (!dayjs(campaigns[i].startDate).isBefore((dayjs(fromDate)))) excludeByDate = true
+        if (!dayjs(campaigns[i].startDate).isBefore((fromDate))) excludeByDate = true
+        if (!dayjs(campaigns[i].endDate).isBefore((fromDate))) excludeByDate = true
       }
       if (toDate){
-        if (!dayjs(campaigns[i].endDate).isBefore((dayjs(toDate)))) excludeByDate = true
+        if (!dayjs(campaigns[i].startDate).isBefore((toDate))) excludeByDate = true
+        if (!dayjs(campaigns[i].endDate).isBefore((toDate))) excludeByDate = true
       }
       if (inc && !excludeByDate){
         filteredCampaigns.push(campaigns[i])
