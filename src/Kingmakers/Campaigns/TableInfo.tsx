@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { 
+  lighten,
   styled,
   TableHead,
   TableRow,
@@ -12,23 +13,9 @@ import {
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.common.white,
-    color: theme.palette.primary.main,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
+    backgroundColor: lighten(theme.palette.primary.main, 0.925),
   },
 }))
-
-// const StyledTableRow = styled(TableRow)(({ theme }) => ({
-//   '&:nth-of-type(odd)': {
-//     backgroundColor: theme.palette.action.hover,
-//   },
-//   '&:last-child td, &:last-child th': {
-//     border: 0,
-//   },
-// }))
-
 
 export default function TableInfo() {
 
@@ -41,16 +28,24 @@ export default function TableInfo() {
             </Font>
           </StyledTableCell>
           <StyledTableCell align="left">
-            <Font variant="title">FROM</Font>
+            <Font variant="title">
+              FROM
+              </Font>
           </StyledTableCell>
           <StyledTableCell align="left">
-            <Font variant="title">TO</Font>
+            <Font variant="title">
+              TO
+              </Font>
           </StyledTableCell>
           <StyledTableCell align="left">
-            <Font variant="title" align="left">STATUS</Font>
+            <Font variant="title" align="left">
+              STATUS
+              </Font>
           </StyledTableCell>
           <StyledTableCell align="right">
-            <Font variant="title" align="right">BUDGET</Font>
+            <Font variant="title" align="right">
+              BUDGET
+              </Font>
           </StyledTableCell>
         </TableRow>
       </TableHead>

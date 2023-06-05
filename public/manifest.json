@@ -3,8 +3,8 @@
   "short_name": "KM Test",
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#1F760D",
-  "background_color": "#1F760D",
+  "theme_color": "#FFFFFF",
+  "background_color": "#FFFFFF",
   "icons": [
     {
       "src": "favicon.ico",
