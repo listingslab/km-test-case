@@ -1,12 +1,10 @@
 ---
 title: "KM Tech Test"
 description: "Analysis & Review"
-slug: "/km-test"
+slug: "/km-tech-test"
 category: "jobs"
 keywords: "test, tech-test, jobs, github, process"
 icon: "doc"
-order: 1
-draft: 0
 ---
 ## Analysis & Review
 
