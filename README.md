@@ -1,72 +1,65 @@
-# [Solution README](./src/Kingmakers/README.md)
+---
+title: "KM Tech Test"
+description: "Analysis & Review"
+slug: "/km-test"
+category: "jobs"
+keywords: "test, tech-test, jobs, github, process"
+icon: "doc"
+order: 1
+draft: 0
+---
+## Analysis & Review
 
-[Demo](https://kingmakers-test.web.app/)
+Hypothetically we are at a point where a developer (me) has raised a problem Pull Request. The problem being that the requirements include the ability to filter a list of Campaigns by date range and it does not
 
- > !important; when testing the app with the AddCampaigns() method in console, 
- please make sure there is no whitespace in your JSON. eg;
+## Quality Assurance
 
- ```javascript
-[{"id":1,"name":"Divavu","startDate":"9/19/2017","endDate":"3/9/2018","Budget":88377},{"id":2,"name":"Jaxspan","startDate":"11/21/2017","endDate":"2/21/2018","Budget":608715},{"id":3,"name":"Miboo","startDate":"11/1/2017","endDate":"6/20/2017","Budget":239507},{"id":4,"name":"Trilith","startDate":"8/25/2017","endDate":"11/30/2017","Budget":179838},{"id":5,"name":"Layo","startDate":"11/28/2017","endDate":"3/10/2018","Budget":837850},{"id":6,"name":"Photojam","startDate":"7/25/2017","endDate":"6/23/2017","Budget":858131},{"id":7,"name":"Blogtag","startDate":"6/27/2017","endDate":"1/15/2018","Budget":109078},{"id":8,"name":"Rhyzio","startDate":"10/13/2017","endDate":"1/25/2018","Budget":272552},{"id":9,"name":"Zoomcast","startDate":"9/6/2017","endDate":"11/10/2017","Budget":301919},{"id":10,"name":"Realbridge","startDate":"3/5/2018","endDate":"10/2/2017","Budget":505602}]
+Because this task is unusually clear and precise, I can infer the Quality Assurance tests that my feature must pass include but are not be limited to;
+
+- Does it filter by Search String?
+- Does it filter by Date?
+- Does the global method called AddCampaigns work?
+- Does it look nice?
+
+## Result
+
+### The Solution fails the second test. The bug is unmissable because it is in one of the few actual requirements
+
+As a developer that’s a bad thing. I knew my code would fail that QA test and I committed it anyway. Depending on how well a teams’ process works, the number of iterations required to complete and merge the task should be minimised. When the Scrum Master gets back to me correctly complaining that my PR has a serious bug in it, I should say...
+
+"Sorry, I shouldn’t have raised a PR that didn’t properly pass QA at that time"
+
+### What the code is meant to do
+
+The UI components are connected to a persisted redux backend, so when their onChange events are triggered, the redux store is updated. In the Campaigns component, the a full list of data is connected to redux, as are the filter values
+
+The idea is a filtered array is created and rendered as changes happen to the redux store
+
+### Why it doesn’t work 
+
+The idea is that we loop through all the Campaigns stored in redux and decide which should be included in   `filteredCampaigns` according to the filter values. This bit doesn't work. 
+
+> Lines 72-92 in [Campaigns.tsx](https://github.com/listingslab/km-test-case/blob/master/src/Kingmakers/Campaigns/Campaigns.tsx)
+
+```javascript
+if (fromDate){
+    if (!dayjs(campaigns[i].startDate).isBefore(dayjs(fromDate))) excludeByDate = true
+    if (!dayjs(campaigns[i].endDate).isBefore(dayjs(fromDate))) excludeByDate = true
+}
 ```
-____________
 
-### [https://dimik.github.io/km-test-case](https://dimik.github.io/km-test-case/).
+### How I'd fix it
 
-### The assignee is required to develop a simple React application that displays a list of campaigns that can be filtered by campaign name and date range.
-Requirements:
-1. Create a public GitHub repository for the application.
-2. Use React and Typescript for the application development.
-3. Feel free to use any libraries or tools during development.
-4. Design the application with production-quality code and styling.
+Why is is that dates always cause such problems? Whenever dates are causing problems I have a go-to approach which works every time. I convert everything to _unix epoch dates_, which are a number. 
 
-### Application Features:
-Display a single page with the following elements:
-1. A list of campaigns showing:
-- Name
-- Start Date
-- End Date
-- Active status (based on whether the current date falls within the start and end date range)
-- Budget (in USD)
-2. A search form above the list to filter campaigns by name.
-3. A date range component for filtering campaigns by start and end dates.
+Specifically they are the number of milliseconds which have elapsed since 1st Jan 1970. Ever so simple and bulletproof to compare, sort etc. Just don't try to read them if you're human
 
-### Ensure that:
-1. Campaigns with start dates within the selected date range are displayed.
-2. Campaigns with end dates within the selected date range are displayed.
-3. End dates cannot be selected before start dates.
-4. Campaigns with end dates before start dates are not displayed.
+#### Links 
 
-### Design Guidelines:
-1. Use your creativity for the UI design.
-2. Display the campaign list in a table format.
-3. Use a green color palette for active campaigns and a red color palette for inactive campaigns.
+- [Task](https://github.com/dimik/km-test-case)
+- [Example](https://dimik.github.io/km-test-case/)
+- [Solution Demo (with bug)](https://kingmakers-test.web.app/)
+- [GitHub repo](https://github.com/listingslab/km-test-case)
+    - [Campaign.tsx](https://github.com/listingslab/km-test-case/blob/master/src/Kingmakers/Campaigns/Campaigns.tsx)
 
-### Testing the Application:
-1. Implement a global method called ‘AddCampaigns’ that accepts an array of campaigns and renders them in the application.
-2. This method will be called from the browser’s JavaScript console for testing purposes.
-3. Ensure the method can be called multiple times, with new campaigns being added to the existing list.
-
-Example of campaign array that can be passed
-
-```json
-[{"id":1,"name":"Divavu","startDate":"9/19/2017","endDate":"3/9/2018","B
-udget":88377},
-{"id":2,"name":"Jaxspan","startDate":"11/21/2017","endDate":"2/21/2018",
-"Budget":608715},
-{"id":3,"name":"Miboo","startDate":"11/1/2017","endDate":"6/20/2017","Bu
-dget":239507},
-{"id":4,"name":"Trilith","startDate":"8/25/2017","endDate":"11/30/2017",
-"Budget":179838},
-{"id":5,"name":"Layo","startDate":"11/28/2017","endDate":"3/10/2018","Bu
-dget":837850},
-{"id":6,"name":"Photojam","startDate":"7/25/2017","endDate":"6/23/2017",
-"Budget":858131},
-{"id":7,"name":"Blogtag","startDate":"6/27/2017","endDate":"1/15/2018","
-Budget":109078},
-{"id":8,"name":"Rhyzio","startDate":"10/13/2017","endDate":"1/25/2018","
-Budget":272552},
-{"id":9,"name":"Zoomcast","startDate":"9/6/2017","endDate":"11/10/2017",
-"Budget":301919},
-{"id":10,"name":"Realbridge","startDate":"3/5/2018","endDate":"10/2/2017
-","Budget":505602}]
-```
+_Tech Tests are a valid part of the recruitment process. You can't tell how someone codes by how they talk_
